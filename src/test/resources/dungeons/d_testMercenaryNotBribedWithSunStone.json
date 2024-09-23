@@ -1,0 +1,30 @@
+{
+    "entities": [
+        {
+            "type" : "player",
+            "x" : 1,
+            "y" : 4
+        }, 
+        {
+            "type" : "sun_stone",
+            "x" : 2,
+            "y" : 4
+        },
+        {
+            "type" : "sun_stone",
+            "x" : 3,
+            "y" : 4
+        },
+        {
+            "type" : "mercenary",
+            "x" : 6,
+            "y" : 4
+        },
+        {
+            "type": "exit",
+            "x": 8,
+            "y": 8
+        }
+    ],
+    "goal-condition": {"goal": "exit"}
+}

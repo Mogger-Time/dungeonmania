@@ -1,0 +1,36 @@
+{
+    "entities": [
+        {
+            "type" : "player",
+            "x" : 8,
+            "y" : 4
+        }, 
+        {
+            "type" : "sun_stone",
+            "x" : 8,
+            "y" : 5
+        },
+        {
+            "type" : "sun_stone",
+            "x" : 8,
+            "y" : 6
+        },
+        {
+            "type" : "sun_stone",
+            "x" : 8,
+            "y" : 7
+        },
+        {
+            "type": "exit",
+            "x": 8,
+            "y": 8
+        }
+    ],
+    "goal-condition": {
+        "goal": "AND",
+        "subgoals": [
+            {"goal": "treasure"},
+            {"goal": "exit"}
+        ]
+    }
+}

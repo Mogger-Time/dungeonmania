@@ -1,0 +1,34 @@
+{
+    "entities": [
+        {
+            "type" : "player",
+            "x" : 5,
+            "y" : 1
+        }, {
+            "type" : "mercenary",
+            "x" : -2,
+            "y" : 1
+        }, {
+            "type": "exit",
+            "x": 7,
+            "y": 1
+        }, {
+            "type": "wood",
+            "x": 4,
+            "y": 1
+        }, {
+            "type": "wood",
+            "x": 3,
+            "y": 1
+        }, {
+            "type": "treasure",
+            "x": 2,
+            "y": 1
+        }, {
+            "type" : "mercenary",
+            "x" : -3,
+            "y" : 1
+        }
+    ],
+    "goal-condition": {"goal": "exit"}
+}

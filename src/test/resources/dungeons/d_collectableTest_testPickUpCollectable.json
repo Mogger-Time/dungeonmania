@@ -1,0 +1,56 @@
+{
+    "entities": [
+        {
+            "type" : "player",
+            "x" : 1,
+            "y" : 1
+        }, {
+            "type" : "wall",
+            "x" : 3,
+            "y" : 1
+        }, {
+            "type" : "treasure",
+            "x" : 4,
+            "y" : 2
+        }, {
+            "type" : "wood",
+            "x" : 3,
+            "y" : 3
+        }, {
+            "type" : "arrow",
+            "x" : 7,
+            "y" : 4
+        }, {
+            "type" : "key",
+            "x" : 4,
+            "y" : 5,
+            "key": 1
+        }, {
+            "type" : "door",
+            "x" : 0,
+            "y" : 7,
+            "key": 1
+        }, {
+            "type" : "sword",
+            "x" : 1,
+            "y" : 2
+        }, {
+            "type" : "bomb",
+            "x" : 6,
+            "y" : 3
+        }, {
+            "type" : "invincibility_potion",
+            "x" : 5,
+            "y" : 8
+        }, {
+            "type" : "invisibility_potion",
+            "x" : 8,
+            "y" : 1
+        }, {
+            "type": "exit",
+            "x": 8,
+            "y": 8
+        }
+    ],
+    "goal-condition": {"goal": "exit"}
+}

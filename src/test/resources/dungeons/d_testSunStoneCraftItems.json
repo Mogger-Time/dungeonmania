@@ -1,0 +1,79 @@
+{
+    "entities": [
+        {
+            "type" : "player",
+            "x" : 1,
+            "y" : 4
+        }, 
+        {
+            "type" : "arrow",
+            "x" : 2,
+            "y" : 2
+        },
+        {
+            "type" : "arrow",
+            "x" : 2,
+            "y" : 3
+        },
+        {
+            "type" : "wood",
+            "x" : 3,
+            "y" : 3
+        },
+        {
+            "type" : "wood",
+            "x" : 3,
+            "y" : 4
+        },
+        {
+            "type" : "sword",
+            "x" : 2,
+            "y" : 5
+        },
+        {
+            "type" : "sun_stone",
+            "x" : 2,
+            "y" : 1
+        },
+        {
+            "type" : "sun_stone",
+            "x" : 2,
+            "y" : 4
+        },
+        {
+            "type" : "sun_stone",
+            "x" : 4,
+            "y" : 4
+        },
+        {
+            "type" : "door",
+            "x" : 5,
+            "y" : 4,
+            "key" : 1
+        },
+        {
+            "type" : "door",
+            "x" : 6,
+            "y" : 5,
+            "key" : 2
+        },
+        {
+            "type" : "key",
+            "x" : 7,
+            "y" : 7,
+            "key" : 1
+        },
+        {
+            "type" : "key",
+            "x" : 7,
+            "y" : 8,
+            "key" : 2
+        },
+        {
+            "type": "exit",
+            "x": 8,
+            "y": 8
+        }
+    ],
+    "goal-condition": {"goal": "exit"}
+}
