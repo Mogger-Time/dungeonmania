@@ -6,5 +6,4 @@ public class Exit extends StaticEntity {
         super();
         setName("exit");
     }
-    
 }

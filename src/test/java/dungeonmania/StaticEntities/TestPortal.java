@@ -1,18 +1,17 @@
 package dungeonmania.StaticEntities;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static dungeonmania.TestUtils.getGoals;
-import static dungeonmania.TestUtils.getPlayer;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static dungeonmania.TestUtils.getGoals;
+import static dungeonmania.TestUtils.getPlayer;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class TestPortal {
 
@@ -99,7 +98,7 @@ public class TestPortal {
     public void testPlayerThroughPortalToExit() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_portalTest_portalToExit", "c_portalTest_basic");
-        
+
         DungeonResponse actualDungeonRes = dmc.tick(Direction.RIGHT);
         EntityResponse initPlayer = getPlayer(res).get();
         actualDungeonRes = dmc.tick(Direction.RIGHT);

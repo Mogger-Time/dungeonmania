@@ -1,23 +1,23 @@
 package dungeonmania.goals;
 
-import java.util.stream.Collectors;
-
-import dungeonmania.game.Game;
 import dungeonmania.entities.Entity;
-import java.util.List;
 import dungeonmania.entities.staticEntity.ZombieToastSpawner;
+import dungeonmania.game.Game;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class EnemiesGoal implements Goal {
-    private int number;
+    private final int number;
 
     public EnemiesGoal(int number) {
         this.number = number;
     }
 
     public boolean checkGoal(Game game) {
-        List<Entity> spawners = game.getEntities().stream().filter(s->(s instanceof ZombieToastSpawner)).collect(Collectors.toList());
-        return (spawners.size() == 0 && (game.getInitialEnemies() - game.getEnemies().size()) >= number);
+        List<Entity> spawners = game.getEntities().stream().filter(s -> (s instanceof ZombieToastSpawner)).collect(Collectors.toList());
+        return (spawners.isEmpty() && (game.getInitialEnemies() - game.getEnemies().size()) >= number);
     }
 
     public String printGoal() {

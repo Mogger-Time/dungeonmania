@@ -2,9 +2,13 @@ package dungeonmania.entities.movingEntity;
 
 import dungeonmania.entities.Entity;
 import dungeonmania.util.Direction;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public abstract class MovingEntity extends Entity {
-    
+
     private double health;
     private double damage;
 
@@ -16,22 +20,6 @@ public abstract class MovingEntity extends Entity {
 
     public boolean isAlive() {
         return health > 0;
-    }
-
-    public double getHealth() {
-        return health;
-    }
-
-    public void setHealth(double health) {
-        this.health = health;
-    }
-
-    public double getDamage() {
-        return damage;
-    }
-
-    public void setDamage(double damage) {
-        this.damage = damage;
     }
 
     public void updatePosition(Direction direction) {

@@ -1,19 +1,15 @@
 package dungeonmania.util;
 
+import lombok.Getter;
+
+@Getter
 public class PosDirWrapper {
-    private Position position;
-    private Direction direction;
+    private final Position position;
+    private final Direction direction;
 
     public PosDirWrapper(Position pos, Direction dir) {
         position = pos;
         direction = dir;
     }
 
-    public Position getPosition() {
-        return position;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
 }

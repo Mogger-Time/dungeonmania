@@ -1,15 +1,17 @@
 package dungeonmania.goals;
 
-import org.json.JSONArray;
+import dungeonmania.dtos.GoalConditionDto;
 import dungeonmania.game.Game;
 
-public class AndGoal implements Goal {
-    private Goal x;
-    private Goal y;
+import java.util.List;
 
-    public AndGoal(JSONArray subgoals) {
-        x = GoalFactory.createGoal(subgoals.getJSONObject(0));
-        y = GoalFactory.createGoal(subgoals.getJSONObject(1));
+public class AndGoal implements Goal {
+    private final Goal x;
+    private final Goal y;
+
+    public AndGoal(List<GoalConditionDto> subgoals) {
+        x = GoalFactory.createGoal(subgoals.getFirst());
+        y = GoalFactory.createGoal(subgoals.getLast());
     }
 
     public boolean checkGoal(Game game) {
@@ -23,11 +25,11 @@ public class AndGoal implements Goal {
     public String printcurGoal(Game game) {
         String xstr = x.printcurGoal(game);
         String ystr = y.printcurGoal(game);
-        if (xstr.equals("") && ystr.equals("")) {
+        if (xstr.isEmpty() && ystr.isEmpty()) {
             return "";
-        } else if (xstr.equals("")) {
+        } else if (xstr.isEmpty()) {
             return ystr;
-        } else if (ystr.equals("")) {
+        } else if (ystr.isEmpty()) {
             return xstr;
         } else {
             return String.format("(%1$s AND %2$s)", xstr, ystr);

@@ -1,12 +1,12 @@
 package dungeonmania.goals;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.staticEntity.Boulder;
 import dungeonmania.entities.staticEntity.FloorSwitch;
 import dungeonmania.game.Game;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class BouldersGoal implements Goal {
     public BouldersGoal() {
@@ -15,8 +15,8 @@ public class BouldersGoal implements Goal {
 
     public boolean checkGoal(Game game) {
         for (FloorSwitch fswitch : game.getFloorSwitches()) {
-            List<Entity> allentities = game.getEntitiesinPos(fswitch.getPosition()).stream().filter(s->(s instanceof Boulder)).collect(Collectors.toList());
-            if (allentities.size() < 1) {
+            List<Entity> allentities = game.getEntitiesinPos(fswitch.getPosition()).stream().filter(s -> (s instanceof Boulder)).collect(Collectors.toList());
+            if (allentities.isEmpty()) {
                 return false;
             }
         }

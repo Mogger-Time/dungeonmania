@@ -1,21 +1,20 @@
 package dungeonmania.StaticEntities;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static dungeonmania.TestUtils.getEntities;
-import static dungeonmania.TestUtils.countEntityOfType;
-
-import java.util.List;
-import java.util.ArrayList;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static dungeonmania.TestUtils.countEntityOfType;
+import static dungeonmania.TestUtils.getEntities;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestZombieToastSpawner {
 
@@ -101,25 +100,18 @@ public class TestZombieToastSpawner {
     }
 
     public boolean isZombieSpawnInValidPos(Position spawnerPos, Position zombiePos, Position obstacle) {
-        List<Position> validSpawnPositions = new ArrayList<Position>();
+        List<Position> validSpawnPositions = new ArrayList<>();
         int x = spawnerPos.getX();
         int y = spawnerPos.getY();
-        validSpawnPositions.add(new Position(x+1, y));
-        validSpawnPositions.add(new Position(x, y+1));
-        validSpawnPositions.add(new Position(x-1, y));
-        validSpawnPositions.add(new Position(x, y-1));
+        validSpawnPositions.add(new Position(x + 1, y));
+        validSpawnPositions.add(new Position(x, y + 1));
+        validSpawnPositions.add(new Position(x - 1, y));
+        validSpawnPositions.add(new Position(x, y - 1));
 
         if (obstacle == null) {
-            if (validSpawnPositions.contains(zombiePos)) {
-                return true;
-            } 
+            return validSpawnPositions.contains(zombiePos);
+        } else {
+            return validSpawnPositions.contains(zombiePos) && zombiePos != obstacle;
         }
-        else {
-            if (validSpawnPositions.contains(zombiePos) && zombiePos != obstacle) {
-                return true;
-            }
-        }
-
-        return false; 
     }
 }

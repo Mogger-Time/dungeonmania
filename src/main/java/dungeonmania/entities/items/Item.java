@@ -1,12 +1,12 @@
 package dungeonmania.entities.items;
 
-import java.util.List;
-
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.movingEntity.Player;
 
+import java.util.List;
+
 public abstract class Item extends Entity {
-    
+
     public Item() {
         super();
     }
@@ -21,7 +21,7 @@ public abstract class Item extends Entity {
                 }
             }
         }
-        
+
         player.addItem(this);
         return true;
     }

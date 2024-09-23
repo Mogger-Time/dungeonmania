@@ -1,23 +1,16 @@
 package dungeonmania.MovingEntities;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import static dungeonmania.TestUtils.getEntities;
-import static dungeonmania.TestUtils.getInventory;
-import static dungeonmania.TestUtils.getPlayer;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import dungeonmania.DungeonManiaController;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static dungeonmania.TestUtils.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestMercenary {
     @Test
@@ -25,13 +18,13 @@ public class TestMercenary {
     public void testBasicMercenaryMovement() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_mercenaryTest_testBasicMercenaryMovement", "c_mercenaryTest");
-        
+
         // when the player moves up, the mercenary should move down or left 
         res = dmc.tick(Direction.UP);
         Position mercenaryPos = getEntities(res, "mercenary").get(0).getPosition();
         assertTrue(
-            (mercenaryPos.getX() == 3 && mercenaryPos.getY() == 7) || 
-            (mercenaryPos.getX() == 2 && mercenaryPos.getY() == 8)
+                (mercenaryPos.getX() == 3 && mercenaryPos.getY() == 7) ||
+                        (mercenaryPos.getX() == 2 && mercenaryPos.getY() == 8)
         );
     }
 
@@ -72,8 +65,8 @@ public class TestMercenary {
         Position mercenaryPos = actualMercenary.getPosition();
         Position playerPos = actualPlayer.getPosition();
         if (Math.abs(mercenaryPos.getX() - playerPos.getX()) != 1 && Math.abs(mercenaryPos.getY() - playerPos.getY()) != 1) {
-            assertThrows(InvalidActionException.class, () -> {dmc.interact(initMercenary.getId());}, 
-            "Mercenary out of range");
+            assertThrows(InvalidActionException.class, () -> dmc.interact(initMercenary.getId()),
+                    "Mercenary out of range");
         }
     }
 
@@ -99,7 +92,7 @@ public class TestMercenary {
         EntityResponse actualPlayer = getPlayer(res).get();
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(3, 3), initPlayer.isInteractable());
         assertEquals(expectedPlayer, actualPlayer);
-        
+
         EntityResponse actualMercenary = getEntities(res, "mercenary").get(0);
         EntityResponse expectedMercenary = new EntityResponse(initMercenary.getId(), initMercenary.getType(), new Position(3, 4), initMercenary.isInteractable());
         assertEquals(expectedMercenary, actualMercenary);
