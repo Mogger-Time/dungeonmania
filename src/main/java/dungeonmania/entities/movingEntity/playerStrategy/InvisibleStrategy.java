@@ -1,7 +1,6 @@
 package dungeonmania.entities.movingEntity.playerStrategy;
 
 import dungeonmania.Battle;
-
 import dungeonmania.entities.movingEntity.Enemy;
 import dungeonmania.entities.movingEntity.Player;
 

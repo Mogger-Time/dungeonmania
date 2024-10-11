@@ -1,7 +1,5 @@
 package dungeonmania.entities.staticEntity;
 
-import java.util.List;
-
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.movingEntity.MovingEntity;
 import dungeonmania.entities.movingEntity.Player;
@@ -10,6 +8,8 @@ import dungeonmania.game.GameLauncher;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
+import java.util.List;
+
 public class Boulder extends StaticEntity {
     public Boulder() {
         super();
@@ -17,7 +17,7 @@ public class Boulder extends StaticEntity {
         super.setInteractable(false);
         super.setCollision(true);
     }
-    
+
     @Override
     public void premove(Player player, Direction direction) {
         pushBoulder(direction);
@@ -37,7 +37,7 @@ public class Boulder extends StaticEntity {
                 break;
             }
         }
-        if (blocked == false) {
+        if (!blocked) {
             setPosition(newPos);
         }
     }

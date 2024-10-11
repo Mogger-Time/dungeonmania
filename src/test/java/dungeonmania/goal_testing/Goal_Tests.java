@@ -1,12 +1,13 @@
 package dungeonmania.goal_testing;
+
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.util.Direction;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static dungeonmania.TestUtils.getGoals;
-
 import org.junit.jupiter.api.Test;
+
+import static dungeonmania.TestUtils.getGoals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class Goal_Tests {
     @Test
     public void test_simple_exit() {

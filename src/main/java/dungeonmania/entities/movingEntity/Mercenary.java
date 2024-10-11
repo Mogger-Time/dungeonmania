@@ -1,7 +1,6 @@
 package dungeonmania.entities.movingEntity;
 
-import org.json.JSONObject;
-
+import dungeonmania.dtos.EntitiesDto;
 import dungeonmania.entities.movingEntity.mercStrategy.BribedStrat;
 import dungeonmania.entities.movingEntity.mercStrategy.EnemyStrat;
 import dungeonmania.entities.movingEntity.mercStrategy.MercStrat;
@@ -9,8 +8,13 @@ import dungeonmania.entities.movingEntity.movementStrategy.FollowStrategy;
 import dungeonmania.entities.movingEntity.movementStrategy.MovementStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.PlayerStrategy;
 import dungeonmania.game.Game;
+import dungeonmania.game.GameLauncher;
 import dungeonmania.util.Position;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class Mercenary extends Enemy {
 
     private int bribeRadius;
@@ -25,28 +29,12 @@ public class Mercenary extends Enemy {
     }
 
     @Override
-    public void setupEntity(JSONObject entityConfig, Position position) {
+    public void setupEntity(EntitiesDto entitiesDto, Position position) {
         super.setPosition(position);
-        super.setHealth(entityConfig.getDouble("mercenary_health"));
-        super.setDamage(entityConfig.getDouble("mercenary_attack"));
-        this.bribeRadius = entityConfig.getInt("bribe_radius");
-        this.bribeAmount = entityConfig.getInt("bribe_amount");
-    }
-
-    public int getBribeRadius() {
-        return bribeRadius;
-    }
-
-    public int getBribeAmount() {
-        return bribeAmount;
-    }
-
-    public void setBribeRadius(int briberadius) {
-        bribeRadius = briberadius;
-    }
-
-    public void setBribeAmount(int bribeamount) {
-        bribeAmount = bribeamount;
+        super.setHealth(GameLauncher.getConfig().getMercenaryHealth());
+        super.setDamage(GameLauncher.getConfig().getMercenaryAttack());
+        this.bribeRadius = GameLauncher.getConfig().getBribeRadius();
+        this.bribeAmount = GameLauncher.getConfig().getBribeAmount();
     }
 
     public void alert(PlayerStrategy strat) {
@@ -81,10 +69,6 @@ public class Mercenary extends Enemy {
 
     public boolean isAlly() {
         return allystatus.isAlly();
-    }
-
-    public void setAllystatus(MercStrat strat) {
-        allystatus = strat;
     }
 
     public boolean bribe() {

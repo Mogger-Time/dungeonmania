@@ -3,11 +3,11 @@ package dungeonmania.goals;
 import dungeonmania.game.Game;
 
 public class TreasureGoal implements Goal {
-    private int number;
+    private final int number;
 
     public TreasureGoal(int number) {
         this.number = number;
-    } 
+    }
 
     public boolean checkGoal(Game game) {
         return (game.getTreasures() >= number);

@@ -9,6 +9,5 @@ public class NormalStrategy extends PlayerStrategy {
 
     @Override
     public void wearout() {
-        return;
     }
 }

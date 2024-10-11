@@ -1,13 +1,14 @@
 package dungeonmania.battle_testing;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.Test;
 
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class battle_test_static {
     @Test
     public void simple_battle() {

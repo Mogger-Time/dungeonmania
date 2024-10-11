@@ -1,18 +1,16 @@
 package dungeonmania.StaticEntities;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static dungeonmania.TestUtils.getPlayer;
-import static dungeonmania.TestUtils.getEntities;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static dungeonmania.TestUtils.getEntities;
+import static dungeonmania.TestUtils.getPlayer;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class TestWall {
@@ -33,7 +31,7 @@ public class TestWall {
         // assert after movement
         assertEquals(expectedPlayer, actualPlayer);
     }
-    
+
     @Test
     @DisplayName("Test the player can't move up through the wall")
     public void testWallCollisionUp() {
@@ -77,7 +75,7 @@ public class TestWall {
     public void testWallCollisionEnemy() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse initDungonRes = dmc.newGame("d_wallTest_basicCollision", "c_staticEntity_testGeneric");
-        EntityResponse zombie_toast = getEntities(initDungonRes, "zombie_toast").get(0);   
+        EntityResponse zombie_toast = getEntities(initDungonRes, "zombie_toast").get(0);
         //Position pos = getEntities(initDungonRes, "zombie_toast").get(0).getPosition();
 
         // create the expected result
@@ -97,7 +95,7 @@ public class TestWall {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse initDungeonRes = dmc.newGame("d_wallTest_basicCollision", "c_staticEntity_testGeneric");
         EntityResponse initPlayer = getPlayer(initDungeonRes).get();
-        EntityResponse boulder = getEntities(initDungeonRes, "boulder").get(0);   
+        EntityResponse boulder = getEntities(initDungeonRes, "boulder").get(0);
 
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(0, 3), false);

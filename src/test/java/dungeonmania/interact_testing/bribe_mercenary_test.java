@@ -1,19 +1,17 @@
 package dungeonmania.interact_testing;
+
 import dungeonmania.DungeonManiaController;
+import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
-import dungeonmania.exceptions.InvalidActionException;
-
 import static dungeonmania.TestUtils.getEntities;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class bribe_mercenary_test {
     @Test
@@ -26,7 +24,7 @@ public class bribe_mercenary_test {
         List<EntityResponse> mercenary = getEntities(res, "mercenary");
         assert mercenary.size() == 1;
         String mercenaryid = mercenary.get(0).getId();
-        res = assertDoesNotThrow(()->dmc.interact(mercenaryid));
+        res = assertDoesNotThrow(() -> dmc.interact(mercenaryid));
     }
 
     @Test
@@ -38,7 +36,7 @@ public class bribe_mercenary_test {
         List<EntityResponse> mercenary = getEntities(res, "mercenary");
         assert mercenary.size() == 1;
         String mercenaryid = mercenary.get(0).getId();
-        assertThrows(InvalidActionException.class, ()->dmc.interact(mercenaryid), "Not enough treasure");
+        assertThrows(InvalidActionException.class, () -> dmc.interact(mercenaryid), "Not enough treasure");
     }
 
     @Test
@@ -52,7 +50,7 @@ public class bribe_mercenary_test {
         List<EntityResponse> mercenary = getEntities(res, "mercenary");
         assert mercenary.size() == 1;
         String mercenaryid = mercenary.get(0).getId();
-        assertThrows(InvalidActionException.class, ()->dmc.interact(mercenaryid), "Not in range");
+        assertThrows(InvalidActionException.class, () -> dmc.interact(mercenaryid), "Not in range");
     }
 
 }

@@ -1,19 +1,17 @@
 package dungeonmania.entities.movingEntity;
 
-import org.json.JSONObject;
-
-import dungeonmania.entities.movingEntity.movementStrategy.FearStrategy;
+import dungeonmania.dtos.EntitiesDto;
 import dungeonmania.entities.movingEntity.movementStrategy.FollowStrategy;
 import dungeonmania.entities.movingEntity.movementStrategy.MovementStrategy;
 import dungeonmania.entities.movingEntity.movementStrategy.RandomStrategy;
-import dungeonmania.entities.movingEntity.playerStrategy.PlayerStrategy;
 import dungeonmania.game.Game;
+import dungeonmania.game.GameLauncher;
 import dungeonmania.util.Position;
 
 public class Assassin extends Mercenary {
-    
+
+    private final MovementStrategy altstrat = new FollowStrategy();
     private int reconRadius;
-    private MovementStrategy altstrat = new FollowStrategy();
     private double bribefailrate;
 
     public Assassin() {
@@ -23,14 +21,14 @@ public class Assassin extends Mercenary {
     }
 
     @Override
-    public void setupEntity(JSONObject entityConfig, Position position) {
+    public void setupEntity(EntitiesDto entitiesDto, Position position) {
         super.setPosition(position);
-        super.setHealth(entityConfig.getDouble("assassin_health"));
-        super.setDamage(entityConfig.getDouble("assassin_attack"));
-        this.reconRadius = entityConfig.getInt("assassin_recon_radius");
-        super.setBribeAmount(entityConfig.getInt("assassin_bribe_amount"));
-        super.setBribeRadius(entityConfig.getInt("bribe_radius"));
-        this.bribefailrate = entityConfig.getDouble("assassin_bribe_fail_rate");
+        super.setHealth(GameLauncher.getConfig().getAssassinHealth());
+        super.setDamage(GameLauncher.getConfig().getAssassinAttack());
+        this.reconRadius = GameLauncher.getConfig().getAssassinReconRadius();
+        super.setBribeAmount(GameLauncher.getConfig().getAssassinBribeAmount());
+        super.setBribeRadius(GameLauncher.getConfig().getBribeRadius());
+        this.bribefailrate = GameLauncher.getConfig().getAssassinBribeFailRate();
     }
 
     @Override
@@ -58,7 +56,7 @@ public class Assassin extends Mercenary {
     public void move(Game game) {
         Position playerpos = game.getPlayerPosition();
         Position ourpos = getPosition();
-        if (Math.abs(playerpos.getX()-ourpos.getX()) < reconRadius && Math.abs(playerpos.getY()-ourpos.getY()) < reconRadius && getStrategy() instanceof RandomStrategy) {
+        if (Math.abs(playerpos.getX() - ourpos.getX()) < reconRadius && Math.abs(playerpos.getY() - ourpos.getY()) < reconRadius && getStrategy() instanceof RandomStrategy) {
             super.move(game, altstrat);
         } else {
             super.move(game);

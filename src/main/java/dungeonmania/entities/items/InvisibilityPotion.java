@@ -1,8 +1,9 @@
 package dungeonmania.entities.items;
-import org.json.JSONObject;
 
+import dungeonmania.dtos.EntitiesDto;
 import dungeonmania.entities.movingEntity.playerStrategy.InvisibleStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.PlayerStrategy;
+import dungeonmania.game.GameLauncher;
 import dungeonmania.util.Position;
 
 public class InvisibilityPotion extends Potion {
@@ -17,8 +18,8 @@ public class InvisibilityPotion extends Potion {
     }
 
     @Override
-    public void setupEntity(JSONObject entityConfig, Position position) {
+    public void setupEntity(EntitiesDto entitiesDto, Position position) {
         super.setPosition(position);
-        setDuration(entityConfig.getInt("invisibility_potion_duration"));
+        setDuration(GameLauncher.getConfig().getInvisibilityPotionDuration());
     }
 }

@@ -1,10 +1,6 @@
 package dungeonmania.entities.staticEntity.logicalEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONObject;
-
+import dungeonmania.dtos.EntitiesDto;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.items.Item;
 import dungeonmania.entities.items.Key;
@@ -15,9 +11,14 @@ import dungeonmania.game.Game;
 import dungeonmania.game.GameLauncher;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SwitchDoor extends LogicalEntity {
     private String logic;
+    @Getter
     private int keyID;
 
     public SwitchDoor() {
@@ -25,10 +26,6 @@ public class SwitchDoor extends LogicalEntity {
         setName("switch_door");
         super.setInteractable(false);
         setCollision(true);
-    }
-
-    public int getKeyID() {
-        return keyID;
     }
 
     public boolean unlockDoor(int keyID) {
@@ -44,15 +41,15 @@ public class SwitchDoor extends LogicalEntity {
         List<Position> adjacentSwDoor = new ArrayList<>();
         int x = swDoorPos.getX();
         int y = swDoorPos.getY();
-        adjacentSwDoor.add(new Position(x-1, y));
-        adjacentSwDoor.add(new Position(x+1, y));
-        adjacentSwDoor.add(new Position(x, y-1));
-        adjacentSwDoor.add(new Position(x, y+1));
+        adjacentSwDoor.add(new Position(x - 1, y));
+        adjacentSwDoor.add(new Position(x + 1, y));
+        adjacentSwDoor.add(new Position(x, y - 1));
+        adjacentSwDoor.add(new Position(x, y + 1));
 
         Position boulderpos = null;
         Position switchpos = null;
         int numberActivated = 0;
-        
+
         Game activeGame = GameLauncher.getActiveGame();
         setCollision(true);
         switch (logic) {
@@ -67,7 +64,7 @@ public class SwitchDoor extends LogicalEntity {
                             }
                         }
                         if (entity instanceof Boulder) {
-                            boulderpos =  pos;
+                            boulderpos = pos;
                         }
                         if (entity instanceof FloorSwitch) {
                             switchpos = pos;
@@ -85,12 +82,12 @@ public class SwitchDoor extends LogicalEntity {
                     for (Entity entity : entsInPos) {
                         if (entity instanceof Wire) {
                             //If connected to activated wire
-                            if (((Wire) entity).isActivated()){
+                            if (((Wire) entity).isActivated()) {
                                 numberActivated++;
                             }
                         }
                         if (entity instanceof Boulder) {
-                            boulderpos =  pos;
+                            boulderpos = pos;
                         }
                         if (entity instanceof FloorSwitch) {
                             switchpos = pos;
@@ -104,21 +101,21 @@ public class SwitchDoor extends LogicalEntity {
                         }
                     }
                 }
-            break;
+                break;
 
             case "xor":
                 for (Position pos : adjacentSwDoor) {
-                List<Entity> entsInPos = activeGame.getEntitiesinPos(pos);
+                    List<Entity> entsInPos = activeGame.getEntitiesinPos(pos);
                     for (Entity entity : entsInPos) {
                         if (entity instanceof Wire) {
                             //If connected to activated wire
-                            if (((Wire) entity).isActivated()){
+                            if (((Wire) entity).isActivated()) {
                                 numberActivated++;
                             }
-                            
+
                         }
                         if (entity instanceof Boulder) {
-                            boulderpos =  pos;
+                            boulderpos = pos;
                         }
                         if (entity instanceof FloorSwitch) {
                             switchpos = pos;
@@ -127,17 +124,17 @@ public class SwitchDoor extends LogicalEntity {
                         if (boulderpos == switchpos && boulderpos != null) {
                             numberActivated++;
                         }
-                        
+
                     }
-                    
+
                 }
                 if (numberActivated == 1) {
                     setCollision(false);
                 }
                 break;
-                
 
-            case "co_and": 
+
+            case "co_and":
                 Position activated1 = null;
                 Position activated2 = null;
                 Position activated3 = null;
@@ -148,50 +145,51 @@ public class SwitchDoor extends LogicalEntity {
                     for (Entity entity : entsInPos) {
                         if (entity instanceof Wire) {
                             //If connected to activated wire
-                            if (((Wire) entity).isActivated()){
+                            if (((Wire) entity).isActivated()) {
                                 numberActivated++;
                             }
-                            
+
                         }
                         if (entity instanceof Boulder) {
-                            boulderpos =  pos;
+                            boulderpos = pos;
                         }
                         if (entity instanceof FloorSwitch) {
                             switchpos = pos;
                         }
                         //If wire is connected to an activated floor switch
-                         //If wire is connected to same activated floor switch
-                         if (boulderpos == switchpos && boulderpos != null) {
+                        //If wire is connected to same activated floor switch
+                        if (boulderpos == switchpos && boulderpos != null) {
                             if (activated1 == null) {
                                 numberActivated++;
                                 activated1 = pos;
                             }
-                            if ( activated2 == null) {
-                               numberActivated++;
-                               activated2 = pos;
+                            if (activated2 == null) {
+                                numberActivated++;
+                                activated2 = pos;
                             }
                             if (activated3 == null) {
-                               numberActivated++;
-                               activated3 = pos;
+                                numberActivated++;
+                                activated3 = pos;
                             }
                             if (activated4 == null) {
-                               numberActivated++;
-                               activated4 = pos;
+                                numberActivated++;
+                                activated4 = pos;
                             }
                         }
                         // If same boulder then activated on same tick
-                        if ((activated1  == activated2) || (activated1 == activated3) || (activated1 == activated4) || (activated2 == activated3) ||
-                            (activated2 == activated4) || (activated3 == activated4)) {
+                        if ((activated1 == activated2) || (activated1 == activated3) || (activated1 == activated4) || (activated2 == activated3) ||
+                                (activated2 == activated4) || (activated3 == activated4)) {
                             sametick = true;
                         }
                     }
                 }
-                if (numberActivated > 1 && sametick == true) {
+                if (numberActivated > 1 && sametick) {
                     setCollision(false);
                 }
-  
+
         }
     }
+
     @Override
     public void premove(Player player, Direction direction) {
         List<Item> inventory = player.getInventory();
@@ -205,11 +203,12 @@ public class SwitchDoor extends LogicalEntity {
             }
         }
     }
+
     @Override
-    public void setupEntity(JSONObject entityConfig, Position position) {
-        this.logic = entityConfig.getString("logic");
-        this.keyID = entityConfig.getInt("key");
+    public void setupEntity(EntitiesDto entitiesDto, Position position) {
+        this.logic = entitiesDto.getLogic();
+        this.keyID = entitiesDto.getKey();
         setPosition(position);
     }
-    
+
 }

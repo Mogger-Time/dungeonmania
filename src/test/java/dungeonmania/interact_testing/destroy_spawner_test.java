@@ -1,18 +1,17 @@
 package dungeonmania.interact_testing;
+
 import dungeonmania.DungeonManiaController;
+import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import dungeonmania.exceptions.InvalidActionException;
 
 import static dungeonmania.TestUtils.getEntities;
-
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class destroy_spawner_test {
     @Test
@@ -26,9 +25,9 @@ public class destroy_spawner_test {
         List<EntityResponse> spawner = getEntities(res, "zombie_toast_spawner");
         assert spawner.size() == 1;
         String spawnerid = spawner.get(0).getId();
-        res = assertDoesNotThrow(()->dmc.interact(spawnerid));
+        res = assertDoesNotThrow(() -> dmc.interact(spawnerid));
         spawner = getEntities(res, "zombie_toast_spawner");
-        assert spawner.size() == 0;
+        assert spawner.isEmpty();
     }
 
     @Test
@@ -41,7 +40,7 @@ public class destroy_spawner_test {
         List<EntityResponse> spawner = getEntities(res, "zombie_toast_spawner");
         assert spawner.size() == 1;
         String spawnerid = spawner.get(0).getId();
-        assertThrows(InvalidActionException.class, ()->dmc.interact(spawnerid), "No weapon");
+        assertThrows(InvalidActionException.class, () -> dmc.interact(spawnerid), "No weapon");
     }
 
     @Test
@@ -53,7 +52,7 @@ public class destroy_spawner_test {
         List<EntityResponse> spawner = getEntities(res, "zombie_toast_spawner");
         assert spawner.size() == 1;
         String spawnerid = spawner.get(0).getId();
-        assertThrows(InvalidActionException.class, ()->dmc.interact(spawnerid), "Not adjacent to ZTS");
+        assertThrows(InvalidActionException.class, () -> dmc.interact(spawnerid), "Not adjacent to ZTS");
     }
 
     @Test
@@ -64,6 +63,6 @@ public class destroy_spawner_test {
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.DOWN);
 
-        assertThrows(IllegalArgumentException.class, ()->dmc.interact("shidma"), "No entity exists");
+        assertThrows(IllegalArgumentException.class, () -> dmc.interact("shidma"), "No entity exists");
     }
 }

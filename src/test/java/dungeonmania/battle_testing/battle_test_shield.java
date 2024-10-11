@@ -1,14 +1,15 @@
 package dungeonmania.battle_testing;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.Test;
 
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class battle_test_shield {
     @Test
     public void test_simple_won() {
@@ -17,7 +18,7 @@ public class battle_test_shield {
         response = controller.tick(Direction.LEFT);
         response = controller.tick(Direction.LEFT);
         response = controller.tick(Direction.LEFT);
-        response = assertDoesNotThrow(() -> controller.build("shield"));        
+        response = assertDoesNotThrow(() -> controller.build("shield"));
         response = controller.tick(Direction.LEFT);
         BattleResponse battle = response.getBattles().get(0);
         RoundResponse firstround = battle.getRounds().get(0);

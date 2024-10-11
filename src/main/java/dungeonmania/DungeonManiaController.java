@@ -14,14 +14,6 @@ public class DungeonManiaController {
 
     private static Game activeGame;
 
-    public String getSkin() {
-        return "default";
-    }
-
-    public String getLocalisation() {
-        return "en_US";
-    }
-
     /**
      * /dungeons
      */
@@ -34,6 +26,14 @@ public class DungeonManiaController {
      */
     public static List<String> configs() {
         return FileLoader.listFileNamesInResourceDirectory("configs");
+    }
+
+    public String getSkin() {
+        return "default";
+    }
+
+    public String getLocalisation() {
+        return "en_US";
     }
 
     /**

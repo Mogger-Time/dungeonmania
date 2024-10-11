@@ -1,16 +1,17 @@
 package dungeonmania.goals;
 
-import org.json.JSONArray;
-
+import dungeonmania.dtos.GoalConditionDto;
 import dungeonmania.game.Game;
 
-public class OrGoal implements Goal {
-    private Goal x;
-    private Goal y;
+import java.util.List;
 
-    public OrGoal(JSONArray subgoals) {
-        x = GoalFactory.createGoal(subgoals.getJSONObject(0));
-        y = GoalFactory.createGoal(subgoals.getJSONObject(1));
+public class OrGoal implements Goal {
+    private final Goal x;
+    private final Goal y;
+
+    public OrGoal(List<GoalConditionDto> subgoals) {
+        x = GoalFactory.createGoal(subgoals.getFirst());
+        y = GoalFactory.createGoal(subgoals.getLast());
     }
 
     public boolean checkGoal(Game game) {
@@ -24,8 +25,8 @@ public class OrGoal implements Goal {
     public String printcurGoal(Game game) {
         String xstr = x.printcurGoal(game);
         String ystr = y.printcurGoal(game);
-        if (xstr.equals("") || ystr.equals("")) {
-            return ""; 
+        if (xstr.isEmpty() || ystr.isEmpty()) {
+            return "";
         } else {
             return String.format("(%1$s OR %2$s)", xstr, ystr);
         }

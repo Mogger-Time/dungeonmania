@@ -1,31 +1,23 @@
 package dungeonmania.util;
 
-import java.util.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Getter
 public class Node {
-    private Position position;
-    private List<Node> path = new ArrayList<Node>();
+    private final Position position;
+    private final Map<Node, Double> adjacent = new HashMap<>();
+    private List<Node> path = new ArrayList<>();
+    @Setter
     private Double distance = Double.MAX_VALUE;
-    private Map<Node, Double> adjacent = new HashMap<Node, Double>();
 
     public Node(Position position) {
         this.position = position;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public Double getDistance() {
-        return distance;
-    }
-
-    public List<Node> getPath() {
-        return path;
-    }
-
-    public Map<Node, Double> getAdjacent() {
-        return adjacent;
     }
 
     public void addAdjacent(Node node, Double distance) {
@@ -37,7 +29,4 @@ public class Node {
         path.add(node);
     }
 
-    public void setDistance(Double distance) {
-        this.distance = distance;
-    }
 }

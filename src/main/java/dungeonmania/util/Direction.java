@@ -1,5 +1,8 @@
 package dungeonmania.util;
 
+import lombok.Getter;
+
+@Getter
 public enum Direction {
     UP(0, -1),
     DOWN(0, 1),
@@ -9,15 +12,12 @@ public enum Direction {
 
     private final Position offset;
 
-    private Direction(Position offset) {
+    Direction(Position offset) {
         this.offset = offset;
     }
 
-    private Direction(int x, int y) {
+    Direction(int x, int y) {
         this.offset = new Position(x, y);
     }
 
-    public Position getOffset() {
-        return this.offset;
-    }
 }

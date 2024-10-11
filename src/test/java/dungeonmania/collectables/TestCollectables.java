@@ -1,17 +1,15 @@
 package dungeonmania.collectables;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static dungeonmania.TestUtils.getEntities;
-import static dungeonmania.TestUtils.getInventory;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static dungeonmania.TestUtils.getEntities;
+import static dungeonmania.TestUtils.getInventory;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestCollectables {
     @Test
@@ -67,7 +65,7 @@ public class TestCollectables {
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.DOWN);
         res = dmc.tick(Direction.DOWN);
-        res = dmc.tick(Direction.DOWN); 
+        res = dmc.tick(Direction.DOWN);
         Position pos6 = getEntities(res, "player").get(0).getPosition();
         assertEquals(pos6.getX(), 5);
         assertEquals(pos6.getY(), 8);
@@ -109,7 +107,7 @@ public class TestCollectables {
     public void testOneKeyInInventory() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_collectableTest_twoKeys", "c_collectableTest_testEntityOnSquare");
-        
+
         // Pick up key 1
         res = dmc.tick(Direction.RIGHT);
         assertEquals(1, getInventory(res, "key").size());
@@ -118,5 +116,5 @@ public class TestCollectables {
         res = dmc.tick(Direction.RIGHT);
         assertEquals(1, getInventory(res, "key").size());
     }
-  
+
 }

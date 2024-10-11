@@ -1,16 +1,16 @@
 package dungeonmania.entities.movingEntity.movementStrategy;
 
-import java.util.List;
-import java.util.Map;
-
 import dungeonmania.entities.movingEntity.Enemy;
 import dungeonmania.game.Game;
 import dungeonmania.util.Direction;
 import dungeonmania.util.PosDirWrapper;
 import dungeonmania.util.Position;
 
+import java.util.List;
+import java.util.Map;
+
 public class FollowStrategy extends MovementStrategy {
-    
+
     public FollowStrategy() {
         super();
         super.setStrategyName("follow");
@@ -34,7 +34,7 @@ public class FollowStrategy extends MovementStrategy {
         //paths.get will be null if no path to player or if player and enemy are standing in same place
         if (paths.get(initial) == null) {
             List<Direction> randomdirections = game.getValidAdjacentTiles(enemy.getPosition());
-            if (randomdirections.size() == 0) {
+            if (randomdirections.isEmpty()) {
                 return null;
             }
             double random = Math.random() * randomdirections.size();

@@ -1,21 +1,23 @@
 package dungeonmania.entities.movingEntity.movementStrategy;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import dungeonmania.entities.movingEntity.Enemy;
 import dungeonmania.game.Game;
 import dungeonmania.util.Direction;
+import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
 public class AntiClockwiseStrategy extends MovementStrategy {
-    
-    private List<Direction> movementTrajectory;
-    private int             nextPositionElement;
+
+    private final List<Direction> movementTrajectory;
+    private int nextPositionElement;
 
     public AntiClockwiseStrategy(int nextPositionElement) {
         super();
         super.setStrategyName("anticlockwise");
-        
+
         this.movementTrajectory = new ArrayList<>() {{
             add(Direction.LEFT);
             add(Direction.DOWN);
@@ -26,16 +28,8 @@ public class AntiClockwiseStrategy extends MovementStrategy {
             add(Direction.UP);
             add(Direction.LEFT);
         }};
-        
-        this.nextPositionElement = nextPositionElement;
-    }
-    
-    public List<Direction> getMovementTrajectory() {
-        return movementTrajectory;
-    }
 
-    public int getNextPositionElement() {
-        return nextPositionElement;
+        this.nextPositionElement = nextPositionElement;
     }
 
     @Override

@@ -1,13 +1,14 @@
 package scintilla;
+
 import static spark.Spark.*;
 
 /**
  * Package only webserver, as to not expose it outside this package.
  */
 final class WebServer {
-    private String ipAddress = Environment.getIPAddress();
-    private int port = Environment.getPort();
-    private boolean isSecure = Environment.isSecure();
+    private final String ipAddress = Environment.getIPAddress();
+    private final int port = Environment.getPort();
+    private final boolean isSecure = Environment.isSecure();
 
     public void initialize() {
         port(port);
@@ -24,7 +25,7 @@ final class WebServer {
         });
     }
 
-    public void finalize() {
+    protected void finalize() {
         awaitInitialization();
     }
 

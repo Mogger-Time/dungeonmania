@@ -6,7 +6,6 @@ public abstract class StaticEntity extends Entity {
 
     /**
      * Constructor for Static Entity
-     * @param isMovable
      */
     public StaticEntity() {
         super();

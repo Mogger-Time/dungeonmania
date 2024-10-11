@@ -1,11 +1,16 @@
 package dungeonmania.response.models;
 
+import lombok.Getter;
+
 public final class GenericResponseWrapper<T> {
+    @Getter
     private final T result;
+    @Getter
     private final String errorTitle;
+    @Getter
     private final String errorMessage;
     private final boolean isError;
-    
+
     private GenericResponseWrapper(T result) {
         this.result = result;
         this.errorTitle = this.errorMessage = null;
@@ -19,27 +24,16 @@ public final class GenericResponseWrapper<T> {
         this.isError = true;
     }
 
-    public static<T> GenericResponseWrapper<T> Ok(T result) {
-        return new GenericResponseWrapper<T>(result);
+    public static <T> GenericResponseWrapper<T> Ok(T result) {
+        return new GenericResponseWrapper<>(result);
     }
 
-    public static<T> GenericResponseWrapper<T> Err(Exception e) {
-        return new GenericResponseWrapper<T>(e.getClass().getSimpleName(), e.getLocalizedMessage());
+    public static <T> GenericResponseWrapper<T> Err(Exception e) {
+        return new GenericResponseWrapper<>(e.getClass().getSimpleName(), e.getLocalizedMessage());
     }
 
     public boolean isError() {
         return isError;
     }
 
-    public T getResult() {
-        return result;
-    }
-
-    public String getErrorTitle() {
-        return errorTitle;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
 }

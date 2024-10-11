@@ -1,54 +1,67 @@
 {
-    "entities": [
-        {
-            "type" : "player",
-            "x" : 1,
-            "y" : 1
-        }, {
-            "type" : "wall",
-            "x" : 3,
-            "y" : 6
-        }, {
-            "type" : "wall",
-            "x" : 4,
-            "y" : 2
-        }, {
-            "type" : "wall",
-            "x" : 4,
-            "y" : 4
-        }, {
-            "type" : "wall",
-            "x" : 5,
-            "y" : 2
-        }, {
-            "type" : "wall",
-            "x" : 5,
-            "y" : 3
-        }, {
-            "type" : "wall",
-            "x" : 5,
-            "y" : 4
-        }, {
-            "type" : "wall",
-            "x" : 6,
-            "y" : 7
-        }, {
-            "type" : "treasure",
-            "x" : 3,
-            "y" : 3
-        }, {
-            "type" : "treasure",
-            "x" : 4,
-            "y" : 3
-        }, {
-            "type": "mercenary",
-            "x": 3,
-            "y": 8
-        }, {
-            "type": "exit",
-            "x": 8,
-            "y": 8
-        }
-    ],
-    "goal-condition": {"goal": "exit"}
+  "entities": [
+    {
+      "type": "player",
+      "x": 1,
+      "y": 1
+    },
+    {
+      "type": "wall",
+      "x": 3,
+      "y": 6
+    },
+    {
+      "type": "wall",
+      "x": 4,
+      "y": 2
+    },
+    {
+      "type": "wall",
+      "x": 4,
+      "y": 4
+    },
+    {
+      "type": "wall",
+      "x": 5,
+      "y": 2
+    },
+    {
+      "type": "wall",
+      "x": 5,
+      "y": 3
+    },
+    {
+      "type": "wall",
+      "x": 5,
+      "y": 4
+    },
+    {
+      "type": "wall",
+      "x": 6,
+      "y": 7
+    },
+    {
+      "type": "treasure",
+      "x": 3,
+      "y": 3
+    },
+    {
+      "type": "treasure",
+      "x": 4,
+      "y": 3
+    },
+    {
+      "type": "mercenary",
+      "x": 3,
+      "y": 8
+    },
+    {
+      "type": "exit",
+      "x": 8,
+      "y": 8
+    }
+  ],
+  "goal-condition": {
+    "goal": "exit"
+  }
 }

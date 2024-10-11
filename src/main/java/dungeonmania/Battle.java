@@ -7,18 +7,22 @@ import dungeonmania.entities.movingEntity.Player;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.response.models.RoundResponse;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Battle {
+    private final transient Player player;
+    private final double initialphealth;
+    private final double initialehealth;
+    private final List<Double> playerhealthlosses = new ArrayList<>();
+    private final List<Double> enemyhealthlosses = new ArrayList<>();
+    private final List<BattleItem> itemsused = new ArrayList<>();
+    @Setter
+    @Getter
     private transient Enemy enemy;
-    private transient Player player;
-    private double initialphealth;
-    private double initialehealth;
-    private List<Double> playerhealthlosses = new ArrayList<Double>();
-    private List<Double> enemyhealthlosses = new ArrayList<Double>();
-    private List<BattleItem> itemsused = new ArrayList<BattleItem>();
     private int numrounds = 0;
 
     public Battle(Player player, Enemy enemy) {
@@ -34,8 +38,8 @@ public class Battle {
 
     public void getItemsUsed() {
         List<BattleItem> battleitems = player.getBattleItems();
-        List<String> useditems = new ArrayList<String>();
-        for (BattleItem battleitem: battleitems) {
+        List<String> useditems = new ArrayList<>();
+        for (BattleItem battleitem : battleitems) {
             if (!useditems.contains(battleitem.getClass().getSimpleName())) {
                 itemsused.add(battleitem);
                 useditems.add(battleitem.getClass().getSimpleName());
@@ -51,14 +55,14 @@ public class Battle {
         double defence = 0;
         double attack = 0;
         double multiplier = 1;
-        for (BattleItem battleitem: itemsused) {
-            attack+=battleitem.getAttack();
-            defence+=battleitem.getDefence();
+        for (BattleItem battleitem : itemsused) {
+            attack += battleitem.getAttack();
+            defence += battleitem.getDefence();
             multiplier = multiplier * battleitem.getMultiplier();
         }
-        attack+=player.getDamage();
-        attack+=(player.getAllyattack() * player.getAlly().size());
-        defence+=(player.getAllydefence() * player.getAlly().size());
+        attack += player.getDamage();
+        attack += (player.getAllyattack() * player.getAlly().size());
+        defence += (player.getAllydefence() * player.getAlly().size());
         attack = attack * multiplier;
         double enemyhealthloss = attack / 5;
         double playerhealthloss = (enemy.getDamage() - defence) / 10;
@@ -71,7 +75,7 @@ public class Battle {
     }
 
     public BattleResponse getResponse() {
-        List<RoundResponse> roundsresponse = new ArrayList<RoundResponse>();
+        List<RoundResponse> roundsresponse = new ArrayList<>();
         for (int i = 0; i < numrounds; i++) {
             roundsresponse.add(getRResponse(i));
         }
@@ -79,19 +83,11 @@ public class Battle {
     }
 
     public RoundResponse getRResponse(int i) {
-        List<ItemResponse> itemsresponse = new ArrayList<ItemResponse>();
+        List<ItemResponse> itemsresponse = new ArrayList<>();
         for (Item item : itemsused) {
             itemsresponse.add(item.getItemResponse());
         }
         return new RoundResponse(playerhealthlosses.get(i), enemyhealthlosses.get(i), itemsresponse);
-    }
-
-    public Enemy getEnemy() {
-        return enemy;
-    }
-
-    public void setEnemy(Enemy loadedEnemy) {
-        enemy = loadedEnemy;
     }
 
 }

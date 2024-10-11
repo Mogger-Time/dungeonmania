@@ -1,7 +1,7 @@
 package dungeonmania.entities.items;
 
-import org.json.JSONObject;
-
+import dungeonmania.dtos.EntitiesDto;
+import dungeonmania.game.GameLauncher;
 import dungeonmania.util.Position;
 
 public class Sword extends BattleItem {
@@ -14,9 +14,9 @@ public class Sword extends BattleItem {
     }
 
     @Override
-    public void setupEntity(JSONObject entityConfig, Position position) {
+    public void setupEntity(EntitiesDto entitiesDto, Position position) {
         super.setPosition(position);
-        setDurability(entityConfig.getInt("sword_durability"));
-        setAttack(entityConfig.getInt("sword_attack"));
+        setDurability(GameLauncher.getConfig().getSwordDurability());
+        setAttack(GameLauncher.getConfig().getSwordAttack());
     }
 }

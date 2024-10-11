@@ -1,32 +1,27 @@
 package dungeonmania.entities.items;
 
-import java.util.List;
-
-import org.json.JSONObject;
-
+import dungeonmania.dtos.EntitiesDto;
 import dungeonmania.entities.movingEntity.Player;
 import dungeonmania.util.Position;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.List;
+
+@Setter
+@Getter
 public class Key extends Item {
     private int keyid;
 
-    public Key () {
+    public Key() {
         super();
         setName("key");
     }
 
-    public int getKeyid() {
-        return this.keyid;
-    }
-
-    public void setKeyid(int keyid) {
-        this.keyid = keyid;
-    }
-
-    @Override 
-    public void setupEntity(JSONObject entityConfig, Position position) {
+    @Override
+    public void setupEntity(EntitiesDto entitiesDto, Position position) {
+        this.keyid = entitiesDto.getKey();
         super.setPosition(position);
-        this.keyid = entityConfig.getInt("key");
     }
 
     @Override

@@ -1,17 +1,19 @@
 package dungeonmania.entities.movingEntity;
 
-import org.json.JSONObject;
-
+import dungeonmania.dtos.EntitiesDto;
 import dungeonmania.entities.movingEntity.movementStrategy.FearStrategy;
 import dungeonmania.entities.movingEntity.movementStrategy.RandomStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.InvincibleStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.InvisibleStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.NormalStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.PlayerStrategy;
+import dungeonmania.game.GameLauncher;
 import dungeonmania.util.Position;
+import lombok.Getter;
 
+@Getter
 public class ZombieToast extends Enemy {
-    
+
     private int spawnRate;
 
     public ZombieToast() {
@@ -20,16 +22,12 @@ public class ZombieToast extends Enemy {
         super.setStrategy(new RandomStrategy());
     }
 
-    public int getSpawnRate() {
-        return spawnRate;
-    }
-
     @Override
-    public void setupEntity(JSONObject entityConfig, Position position) {
+    public void setupEntity(EntitiesDto entitiesDto, Position position) {
         super.setPosition(position);
-        super.setHealth(entityConfig.getDouble("zombie_health"));
-        super.setDamage(entityConfig.getDouble("zombie_attack"));
-        this.spawnRate = entityConfig.getInt("zombie_spawn_rate");
+        super.setHealth(GameLauncher.getConfig().getZombieHealth());
+        super.setDamage(GameLauncher.getConfig().getZombieAttack());
+        this.spawnRate = GameLauncher.getConfig().getZombieSpawnRate();
     }
 
     public void alert(PlayerStrategy strat) {

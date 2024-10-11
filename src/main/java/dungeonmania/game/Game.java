@@ -1,64 +1,56 @@
 package dungeonmania.game;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-
-import org.json.JSONObject;
-
+import dungeonmania.dtos.EntitiesDto;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
-import dungeonmania.entities.items.BattleItem;
-import dungeonmania.entities.items.Bomb;
-import dungeonmania.entities.items.Item;
-import dungeonmania.entities.items.SunStone;
-import dungeonmania.entities.items.Sword;
-import dungeonmania.entities.items.Treasure;
+import dungeonmania.entities.items.*;
 import dungeonmania.entities.movingEntity.Enemy;
 import dungeonmania.entities.movingEntity.Mercenary;
 import dungeonmania.entities.movingEntity.Player;
-import dungeonmania.entities.movingEntity.Spider;
 import dungeonmania.entities.movingEntity.playerStrategy.PlayerStrategy;
+import dungeonmania.entities.staticEntity.*;
+import dungeonmania.entities.staticEntity.logicalEntity.LightBulb;
+import dungeonmania.entities.staticEntity.logicalEntity.SwitchDoor;
+import dungeonmania.entities.staticEntity.logicalEntity.Wire;
+import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.goals.Goal;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.PosDirWrapper;
-import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Position;
-import dungeonmania.entities.staticEntity.Boulder;
-import dungeonmania.entities.staticEntity.FloorSwitch;
-import dungeonmania.entities.staticEntity.Portal;
-import dungeonmania.entities.staticEntity.SwampTile;
-import dungeonmania.entities.staticEntity.ZombieToastSpawner;
-import dungeonmania.entities.staticEntity.logicalEntity.LightBulb;
-import dungeonmania.entities.staticEntity.logicalEntity.SwitchDoor;
-import dungeonmania.entities.staticEntity.logicalEntity.Wire;
-import dungeonmania.goals.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 public class Game {
 
-    private String dungeonID;
-    private String dungeonName;
-    private String configName;
-    private List<Entity> entities;
+    @Getter
+    private final String dungeonID;
+    @Getter
+    private final String dungeonName;
+    @Getter
+    private final String configName;
+    @Getter
+    private final List<Entity> entities;
+    private final Goal goal;
+    private final int initialenemies;
+    @Setter
+    @Getter
     private Player player;
-    private Goal goal;
-    private int initialenemies;
     private int gameTick;
 
     public Game(String dungeonName, String configName, List<Entity> entities, Goal goal) {
-        this.dungeonID = dungeonName + UUID.randomUUID().toString();
+        this.dungeonID = dungeonName + UUID.randomUUID();
         this.dungeonName = dungeonName;
         this.configName = configName;
         this.entities = entities;
         this.goal = goal;
         this.gameTick = 1;
-        for (Entity entity: entities) {
+        for (Entity entity : entities) {
             if (entity instanceof Player) {
                 player = (Player) entity;
                 entities.remove(entity);
@@ -72,32 +64,8 @@ public class Game {
         return initialenemies;
     }
 
-    public String getDungeonID() {
-        return dungeonID;
-    }
-
-    public String getDungeonName() {
-        return dungeonName;
-    }
-
-    public String getConfigName() {
-        return configName;
-    }
-
-    public List<Entity> getEntities() {
-        return entities;
-    }
-
     public Position getPlayerPosition() {
         return player.getPosition();
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
     }
 
     public void addEntity(Entity entity) {
@@ -110,9 +78,9 @@ public class Game {
 
     public List<Enemy> getEnemies() {
 
-        List<Enemy> enemies = new ArrayList<Enemy>();
+        List<Enemy> enemies = new ArrayList<>();
 
-        for (Entity entity: entities) {
+        for (Entity entity : entities) {
             if (entity instanceof Enemy) {
                 enemies.add((Enemy) entity);
             }
@@ -122,7 +90,7 @@ public class Game {
     }
 
     public List<Bomb> getBombs() {
-        List<Bomb> bombs = new ArrayList<Bomb>();
+        List<Bomb> bombs = new ArrayList<>();
         for (Entity entity : entities) {
             if (entity instanceof Bomb) {
                 bombs.add((Bomb) entity);
@@ -143,8 +111,8 @@ public class Game {
     }
 
     public List<FloorSwitch> getFloorSwitches() {
-        List<FloorSwitch> switches = new ArrayList<FloorSwitch>();
-        for (Entity entity: entities) {
+        List<FloorSwitch> switches = new ArrayList<>();
+        for (Entity entity : entities) {
             if (entity instanceof FloorSwitch) {
                 switches.add((FloorSwitch) entity);
             }
@@ -153,7 +121,7 @@ public class Game {
     }
 
     public List<ZombieToastSpawner> getZombieToastSpawners() {
-        List<ZombieToastSpawner> spawners = new ArrayList<ZombieToastSpawner>();
+        List<ZombieToastSpawner> spawners = new ArrayList<>();
         for (Entity entity : entities) {
             if (entity instanceof ZombieToastSpawner) {
                 spawners.add((ZombieToastSpawner) entity);
@@ -163,7 +131,7 @@ public class Game {
     }
 
     public List<LightBulb> getLightBulbs() {
-        List<LightBulb> lightbulbs = new ArrayList<LightBulb>();
+        List<LightBulb> lightbulbs = new ArrayList<>();
         for (Entity entity : entities) {
             if (entity instanceof LightBulb) {
                 lightbulbs.add((LightBulb) entity);
@@ -173,7 +141,7 @@ public class Game {
     }
 
     public List<Wire> getWires() {
-        List<Wire> wires = new ArrayList<Wire>();
+        List<Wire> wires = new ArrayList<>();
         for (Entity entity : entities) {
             if (entity instanceof Wire) {
                 wires.add((Wire) entity);
@@ -183,7 +151,7 @@ public class Game {
     }
 
     public List<SwitchDoor> getSwitchDoors() {
-        List<SwitchDoor> switchDoors = new ArrayList<SwitchDoor>();
+        List<SwitchDoor> switchDoors = new ArrayList<>();
         for (Entity entity : entities) {
             if (entity instanceof SwitchDoor) {
                 switchDoors.add((SwitchDoor) entity);
@@ -201,11 +169,11 @@ public class Game {
     }
 
     public List<Entity> getEntitiesinPos(Position position) {
-        return entities.stream().filter(s->(s.getPosition().equals(position))).collect(Collectors.toList());
+        return entities.stream().filter(s -> (s.getPosition().equals(position))).collect(Collectors.toList());
     }
 
     public Hashtable<Position, Direction> posDirTranslation(Position position) {
-        return new Hashtable<Position, Direction>() {{
+        return new Hashtable<>() {{
             put(new Position(position.getX() - 1, position.getY()), Direction.LEFT);
             put(new Position(position.getX(), position.getY() - 1), Direction.UP);
             put(new Position(position.getX() + 1, position.getY()), Direction.RIGHT);
@@ -215,16 +183,16 @@ public class Game {
 
     public ArrayList<Direction> getValidAdjacentTiles(Position position) {
         Hashtable<Position, Direction> posDir = posDirTranslation(position);
-        ArrayList<Direction> adjacentTiles = new ArrayList<Direction>();
+        ArrayList<Direction> adjacentTiles = new ArrayList<>();
         adjacentTiles.add(Direction.LEFT);
         adjacentTiles.add(Direction.UP);
         adjacentTiles.add(Direction.RIGHT);
         adjacentTiles.add(Direction.DOWN);
 
-        for (Position pos: posDir.keySet()) {
+        for (Position pos : posDir.keySet()) {
             List<Entity> entitiesOnTile = getEntitiesinPos(pos);
-            for (Entity entity: entitiesOnTile) {
-                if (entity.getCollision() == true) {
+            for (Entity entity : entitiesOnTile) {
+                if (entity.getCollision()) {
                     adjacentTiles.remove(posDir.get(pos));
                     break;
                 }
@@ -237,7 +205,7 @@ public class Game {
     public boolean noBouldersNext(Direction direction, Position position) {
         Position newPosition = position.translateBy(direction);
         List<Entity> entitiesOnTile = getEntitiesinPos(newPosition);
-        for (Entity entity: entitiesOnTile) {
+        for (Entity entity : entitiesOnTile) {
             if (entity instanceof Boulder) {
                 return false;
             }
@@ -247,7 +215,7 @@ public class Game {
 
     public DungeonResponse getDungeonResponse() {
 
-        List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
+        List<EntityResponse> entityResponses = new ArrayList<>();
         for (Entity entity : entities) {
             entityResponses.add(entity.getEntityResponse());
         }
@@ -277,8 +245,8 @@ public class Game {
         for (SwitchDoor switchdoor : getSwitchDoors()) {
             switchdoor.checkActivated();
         }
-        List<Entity> delentities = new ArrayList<Entity>();
-        for (Entity entity: getPlayerEntities()) {
+        List<Entity> delentities = new ArrayList<>();
+        for (Entity entity : getPlayerEntities()) {
             if (entity.interact(player)) {
                 delentities.add(entity);
             }
@@ -300,12 +268,7 @@ public class Game {
         int y = (int) (Math.random() * 10);
 
         if (gameTick % spawnRate == 0) {
-            JSONObject spiderObject = new JSONObject();
-            spiderObject.put("type", "spider");
-            spiderObject.put("x", x);
-            spiderObject.put("y", y);
-
-            this.addEntity(EntityFactory.createEntity(spiderObject));
+            this.addEntity(EntityFactory.createEntity(new EntitiesDto(x, y, "spider")));
         }
     }
 
@@ -332,12 +295,12 @@ public class Game {
             }
         }
         entsinpos = getEntitiesinPos(futurepos); //in case boulder moves, get entities again
-        entsinpos = entsinpos.stream().filter(s->(s.getCollision())).collect(Collectors.toList());
-        if (entsinpos.size() == 0) {
+        entsinpos = entsinpos.stream().filter(Entity::getCollision).collect(Collectors.toList());
+        if (entsinpos.isEmpty()) {
             player.setPosition(futurepos);
         }
-        List<Entity> delentities = new ArrayList<Entity>();
-        for (Entity entity: getPlayerEntities()) {
+        List<Entity> delentities = new ArrayList<>();
+        for (Entity entity : getPlayerEntities()) {
             if (entity.interact(player)) {
                 delentities.add(entity);
             }
@@ -361,17 +324,15 @@ public class Game {
                 throw new InvalidActionException("Not adjacent to ZTS");
             }
             List<BattleItem> battleItems = player.getBattleItems();
-            List<BattleItem> swords = battleItems.stream().filter(s->(s instanceof Sword)).collect(Collectors.toList());
-            if (swords.size() == 0) {
-                throw new InvalidActionException("No sword"); 
+            List<BattleItem> swords = battleItems.stream().filter(s -> (s instanceof Sword)).collect(Collectors.toList());
+            if (swords.isEmpty()) {
+                throw new InvalidActionException("No sword");
             }
-            entities.remove(entityfound);  
-        } 
-        else if (entityfound instanceof Mercenary) { 
+            entities.remove(entityfound);
+        } else if (entityfound instanceof Mercenary) {
             Mercenary merc = (Mercenary) entityfound;
             player.bribe(merc);
-        }
-        else {
+        } else {
             throw new InvalidActionException("Entity can not be interacted with");
         }
     }
@@ -408,12 +369,12 @@ public class Game {
         upmost--;
         rightmost++;
         downmost++;
-        List<Integer> dimensions = new ArrayList<Integer>();
+        List<Integer> dimensions = new ArrayList<>();
         dimensions.add(leftmost);
         dimensions.add(upmost);
         dimensions.add(rightmost);
         dimensions.add(downmost);
-        return dimensions;  
+        return dimensions;
     }
 
     public Map<Position, PosDirWrapper> getPath(Entity source, Position destination) {
@@ -422,13 +383,13 @@ public class Game {
         int rightbound = grid.get(2);
         int upbound = grid.get(1);
         int downbound = grid.get(3);
-        Map<Position, Double> distance = new HashMap<Position, Double>();
+        Map<Position, Double> distance = new HashMap<>();
         //Position key is the current position
         //PosDirWrapper.getPosition is the previous position
         //PosDirWrapper.getDirection is the direction taken from prev to get to current
-        Map<Position, PosDirWrapper> previous = new HashMap<Position, PosDirWrapper>();
-        List<Position> visited = new ArrayList<Position>();
-        List<Position> queue = new ArrayList<Position>();
+        Map<Position, PosDirWrapper> previous = new HashMap<>();
+        List<Position> visited = new ArrayList<>();
+        List<Position> queue = new ArrayList<>();
         for (int i = leftbound; i <= rightbound; i++) {
             for (int j = upbound; j <= downbound; j++) {
                 Position node = new Position(i, j);
@@ -437,7 +398,7 @@ public class Game {
         }
         distance.put(source.getPosition(), 0.0);
         queue.add(source.getPosition());
-        while (queue.size() > 0) {
+        while (!queue.isEmpty()) {
             Position temp = null;
             Double smallestdistance = Double.MAX_VALUE;
             for (Position pos : queue) {
@@ -453,7 +414,7 @@ public class Game {
             }
             for (Entry<Position, Direction> entry : posDirTranslation(temp).entrySet()) {
                 Position adjPos = entry.getKey();
-                Direction dirto  =entry.getValue();
+                Direction dirto = entry.getValue();
                 if (leftbound <= adjPos.getX() && adjPos.getX() <= rightbound && upbound <= adjPos.getY() && adjPos.getY() <= downbound) {
                     int cost = 1;
                     List<Entity> entitiesatPos = getEntitiesinPos(adjPos);
@@ -478,7 +439,7 @@ public class Game {
                             queue.add(adjPos);
                         }
                         if (distance.get(temp) + cost < distance.get(adjPos)) {
-                            distance.put(adjPos, (distance.get(temp)+cost));
+                            distance.put(adjPos, (distance.get(temp) + cost));
                             previous.put(adjPos, new PosDirWrapper(temp, dirto));
                         }
                     }
