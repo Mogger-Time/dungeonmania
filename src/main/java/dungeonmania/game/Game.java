@@ -26,20 +26,16 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+@Getter
+@Setter
 public class Game {
 
-    @Getter
     private final String dungeonID;
-    @Getter
     private final String dungeonName;
-    @Getter
     private final String configName;
-    @Getter
     private final List<Entity> entities;
     private final Goal goal;
     private final int initialenemies;
-    @Setter
-    @Getter
     private Player player;
     private int gameTick;
 
@@ -258,7 +254,7 @@ public class Game {
     }
 
     public void spawnSpiders() {
-        int spawnRate = GameLauncher.getSpiderSpawnRate();
+        int spawnRate = GameLauncher.getConfig().getSpiderSpawnRate();
 
         if (spawnRate == 0) {
             return;

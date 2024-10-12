@@ -95,11 +95,7 @@ public class DungeonManiaController {
      * /game/save
      */
     public DungeonResponse saveGame(String name) throws IllegalArgumentException {
-        try {
-            GameLauncher.gameToJSON(name);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        GameLauncher.saveGame(name);
         return activeGame.getDungeonResponse();
     }
 
@@ -108,14 +104,9 @@ public class DungeonManiaController {
      */
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
         Game loadedGame;
-        try {
-            loadedGame = GameLauncher.JSONtoGame(name);
-            activeGame = loadedGame;
-            return loadedGame.getDungeonResponse();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        loadedGame = GameLauncher.loadGame(name);
+        activeGame = loadedGame;
+        return loadedGame.getDungeonResponse();
     }
 
     /**

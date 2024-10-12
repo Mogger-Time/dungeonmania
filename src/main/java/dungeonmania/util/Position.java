@@ -1,5 +1,7 @@
 package dungeonmania.util;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -111,6 +113,7 @@ public final class Position {
     // 0 1 2
     // 7 p 3
     // 6 5 4
+    @JsonIgnore
     public List<Position> getAdjacentPositions() {
         List<Position> adjacentPositions = new ArrayList<>();
         adjacentPositions.add(new Position(x - 1, y - 1));
@@ -124,6 +127,7 @@ public final class Position {
         return adjacentPositions;
     }
 
+    @JsonIgnore
     public List<Position> getCardAdjPositions() {
         List<Position> adjacentPositions = new ArrayList<>();
         adjacentPositions.add(new Position(x, y - 1));

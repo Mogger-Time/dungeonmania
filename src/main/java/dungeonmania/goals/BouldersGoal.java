@@ -4,14 +4,14 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.staticEntity.Boulder;
 import dungeonmania.entities.staticEntity.FloorSwitch;
 import dungeonmania.game.Game;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BouldersGoal implements Goal {
-    public BouldersGoal() {
-
-    }
+@NoArgsConstructor
+public class BouldersGoal implements Goal, Serializable {
 
     public boolean checkGoal(Game game) {
         for (FloorSwitch fswitch : game.getFloorSwitches()) {
