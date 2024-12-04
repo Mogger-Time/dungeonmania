@@ -9,7 +9,11 @@ import dungeonmania.entities.movingEntity.playerStrategy.InvisibleStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.NormalStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.PlayerStrategy;
 import dungeonmania.util.Position;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class MercStrat {
 
     protected int duration;
@@ -17,10 +21,6 @@ public class MercStrat {
 
     public MercStrat(int duration) {
         this.duration = duration;
-    }
-
-    public void setStrategyName(String strategyName) {
-        this.strategyName = strategyName;
     }
 
     public void alert(PlayerStrategy strat, Mercenary mercenary) {
@@ -41,10 +41,7 @@ public class MercStrat {
         return true;
     }
 
-    public void wearout() {}
-
-    public int getDuration() {
-        return duration;
+    public void wearout() {
     }
 
     public boolean gotoPrev(Player player, Mercenary mercenary) {

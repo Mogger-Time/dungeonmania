@@ -1,7 +1,11 @@
 package dungeonmania.entities.items;
 
 import dungeonmania.entities.movingEntity.playerStrategy.PlayerStrategy;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public abstract class Potion extends Item {
     private int duration;
 
@@ -11,14 +15,6 @@ public abstract class Potion extends Item {
 
     public Potion(int duration) {
         super();
-        this.duration = duration;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
         this.duration = duration;
     }
 

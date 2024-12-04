@@ -1,14 +1,17 @@
 {
-    "entities": [
-        {
-            "type" : "player",
-            "x" : 1,
-            "y" : 8
-        }, {
-            "type" : "hydra",
-            "x" : 1,
-            "y" : 7
-        }
-    ],
-    "goal-condition": {"goal": "exit"}
+  "entities": [
+    {
+      "type": "player",
+      "x": 1,
+      "y": 8
+    },
+    {
+      "type": "hydra",
+      "x": 1,
+      "y": 7
+    }
+  ],
+  "goal-condition": {
+    "goal": "exit"
+  }
 }

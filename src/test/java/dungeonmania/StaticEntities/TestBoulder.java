@@ -1,18 +1,16 @@
 package dungeonmania.StaticEntities;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static dungeonmania.TestUtils.getPlayer;
-import static dungeonmania.TestUtils.getEntities;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static dungeonmania.TestUtils.getEntities;
+import static dungeonmania.TestUtils.getPlayer;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class TestBoulder {
@@ -22,7 +20,7 @@ public class TestBoulder {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse initDungonRes = dmc.newGame("d_bouldersOnlyTest", "c_boulderTest");
         EntityResponse initPlayer = getPlayer(initDungonRes).get();
-        EntityResponse boulder0 = getEntities(initDungonRes, "boulder").get(0);   
+        EntityResponse boulder0 = getEntities(initDungonRes, "boulder").get(0);
 
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(2, 1), false);
@@ -37,13 +35,14 @@ public class TestBoulder {
         assertEquals(expectedPlayer, actualPlayer);
         assertEquals(expectedBoulder, actualBoulder);
     }
+
     @Test
     @DisplayName("Test the player can't push two boulders at once")
     public void testBoulderPushTwoSimultaneously() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse initDungonRes = dmc.newGame("d_bouldersOnlyTest", "c_boulderTest");
         EntityResponse initPlayer = getPlayer(initDungonRes).get();
-        EntityResponse boulder2 = getEntities(initDungonRes, "boulder").get(2);   
+        EntityResponse boulder2 = getEntities(initDungonRes, "boulder").get(2);
 
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(1, 1), false);
@@ -58,15 +57,16 @@ public class TestBoulder {
         assertEquals(expectedPlayer, actualPlayer);
         assertEquals(expectedBoulder, actualBoulder);
     }
+
     @Test
     @DisplayName("Test the player pushing multiple boulders one after another")
     public void testBoulderPushAfterBoulder() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse initDungonRes = dmc.newGame("d_bouldersOnlyTest", "c_boulderTest");
         EntityResponse initPlayer = getPlayer(initDungonRes).get();
-        EntityResponse boulder1 = getEntities(initDungonRes, "boulder").get(1);   
-        EntityResponse boulder2 = getEntities(initDungonRes, "boulder").get(2);  
-        EntityResponse boulder3 = getEntities(initDungonRes, "boulder").get(3);   
+        EntityResponse boulder1 = getEntities(initDungonRes, "boulder").get(1);
+        EntityResponse boulder2 = getEntities(initDungonRes, "boulder").get(2);
+        EntityResponse boulder3 = getEntities(initDungonRes, "boulder").get(3);
 
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(1, 2), false);
@@ -98,14 +98,14 @@ public class TestBoulder {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse initDungonRes = dmc.newGame("d_bouldersCollision", "c_boulderTest");
         EntityResponse initPlayer = getPlayer(initDungonRes).get();
-        EntityResponse boulder0 = getEntities(initDungonRes, "boulder").get(0);   
+        EntityResponse boulder0 = getEntities(initDungonRes, "boulder").get(0);
 
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(1, 1), false);
         EntityResponse expectedBoulder = new EntityResponse(boulder0.getId(), boulder0.getType(), new Position(2, 1), false);
 
         // move player right, pushing the boulder but not moving as there is a wall
-    
+
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
         EntityResponse actualPlayer = getPlayer(actualDungonRes).get();
         EntityResponse actualBoulder = getEntities(actualDungonRes, "boulder").get(0);
@@ -113,7 +113,7 @@ public class TestBoulder {
         // assert after movement
         assertEquals(expectedBoulder, actualBoulder);
         assertEquals(expectedPlayer, actualPlayer);
-        
+
     }
 
 }

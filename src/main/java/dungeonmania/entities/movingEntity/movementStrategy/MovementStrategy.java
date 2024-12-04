@@ -1,21 +1,21 @@
 package dungeonmania.entities.movingEntity.movementStrategy;
 
-import java.util.List;
-
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.movingEntity.Enemy;
 import dungeonmania.entities.movingEntity.Mercenary;
 import dungeonmania.entities.staticEntity.Portal;
 import dungeonmania.game.Game;
 import dungeonmania.util.Direction;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.List;
+
+@Getter
+@Setter
 public class MovementStrategy {
 
     private String strategyName;
-
-    public void setStrategyName(String strategyName) {
-        this.strategyName = strategyName;
-    }
 
     public void move(Game game, Enemy enemy) {
         Direction nextdir = getNextPosition(game, enemy);

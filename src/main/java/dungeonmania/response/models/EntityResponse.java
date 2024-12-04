@@ -19,15 +19,15 @@ public final class EntityResponse {
         return isInteractable;
     }
 
-    public final String getId() {
+    public String getId() {
         return id;
     }
 
-    public final String getType() {
+    public String getType() {
         return type;
     }
 
-    public final Position getPosition() {
+    public Position getPosition() {
         return position;
     }
 
@@ -39,8 +39,8 @@ public final class EntityResponse {
 
         EntityResponse entityResponse = (EntityResponse) obj;
         return entityResponse.id.equals(id) &&
-               entityResponse.type.equals(type) && 
-               entityResponse.position.equals(position) &&
-               entityResponse.isInteractable == isInteractable;
+                entityResponse.type.equals(type) &&
+                entityResponse.position.equals(position) &&
+                entityResponse.isInteractable == isInteractable;
     }
 }

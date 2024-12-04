@@ -1,11 +1,11 @@
 package dungeonmania.goals;
 
-import dungeonmania.game.Game;
 import dungeonmania.entities.staticEntity.Exit;
+import dungeonmania.game.Game;
 
 public class ExitGoal implements Goal {
     public boolean checkGoal(Game game) {
-        return game.getPlayerEntities().stream().anyMatch(s->(s instanceof Exit));
+        return game.getPlayerEntities().stream().anyMatch(s -> (s instanceof Exit));
     }
 
     public String printGoal() {

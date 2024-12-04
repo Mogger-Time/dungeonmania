@@ -8,12 +8,12 @@ public final class BattleResponse {
     private final double initialPlayerHealth;
     private final double initialEnemyHealth;
     private final List<RoundResponse> rounds;
-    
-    public BattleResponse(){
+
+    public BattleResponse() {
         this.initialPlayerHealth = 0;
         this.initialEnemyHealth = 0;
         this.enemy = "";
-        this.rounds = new ArrayList<RoundResponse>();
+        this.rounds = new ArrayList<>();
     }
 
     public BattleResponse(String enemy, List<RoundResponse> rounds, double initialPlayerHealth, double initialEnemyHealth) {
@@ -23,19 +23,19 @@ public final class BattleResponse {
         this.rounds = rounds;
     }
 
-    public final String getEnemy(){
+    public String getEnemy() {
         return enemy;
     }
 
-    public final double getInitialPlayerHealth(){
+    public double getInitialPlayerHealth() {
         return initialPlayerHealth;
     }
 
-    public final double getInitialEnemyHealth(){
+    public double getInitialEnemyHealth() {
         return initialEnemyHealth;
     }
 
-    public final List<RoundResponse> getRounds(){
+    public List<RoundResponse> getRounds() {
         return rounds;
     }
 }

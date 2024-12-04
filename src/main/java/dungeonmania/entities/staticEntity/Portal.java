@@ -1,10 +1,6 @@
 package dungeonmania.entities.staticEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONObject;
-
+import dungeonmania.dtos.EntitiesDto;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.movingEntity.MovingEntity;
 import dungeonmania.entities.movingEntity.Player;
@@ -12,7 +8,12 @@ import dungeonmania.game.Game;
 import dungeonmania.game.GameLauncher;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
 public class Portal extends StaticEntity {
 
     private String colour;
@@ -21,10 +22,6 @@ public class Portal extends StaticEntity {
         super();
         setName("portal");
         super.setInteractable(true);
-    }
-
-    public String getColour() {
-        return colour;
     }
 
     public Position findotherPortal() {
@@ -57,13 +54,13 @@ public class Portal extends StaticEntity {
             }
         }
     }
-    
+
     public Position getnewLoc(Direction movement, Game activeGame) {
         Position portalExitPos = this.findotherPortal();
         ArrayList<Direction> validPositions = activeGame.getValidAdjacentTiles(portalExitPos);
 
         // If portal exit is blocked or surrounded, don't move player
-        if (validPositions.size() == 0) {
+        if (validPositions.isEmpty()) {
             return null;
         }
 
@@ -77,9 +74,10 @@ public class Portal extends StaticEntity {
     }
 
     @Override
-    public void setupEntity(JSONObject entityConfig, Position position) {
+    public void setupEntity(EntitiesDto entitiesDto, Position position) {
+        this.colour = entitiesDto.getColour();
         setPosition(position);
-        this.colour = entityConfig.getString("colour");
+
     }
 
     @Override

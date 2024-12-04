@@ -1,34 +1,36 @@
 {
-    "entities": [
-        {
-            "type": "player",
-            "x": 1,
-            "y": 1
-        }
-    ],
-    "goal-condition": {
-        "goal": "AND",
-        "subgoals": [
-            {
-                "goal": "OR",
-                "subgoals": [
-                    {
-                        "goal": "enemies"
-                    }, {
-                        "goal": "treasure"
-                    }
-                ]
-            }, 
-            {
-                "goal": "OR",
-                "subgoals": [
-                    {
-                        "goal": "boulders"
-                    }, {
-                        "goal": "exit"
-                    }
-                ]
-            }
-        ]
+  "entities": [
+    {
+      "type": "player",
+      "x": 1,
+      "y": 1
     }
+  ],
+  "goal-condition": {
+    "goal": "AND",
+    "subgoals": [
+      {
+        "goal": "OR",
+        "subgoals": [
+          {
+            "goal": "enemies"
+          },
+          {
+            "goal": "treasure"
+          }
+        ]
+      },
+      {
+        "goal": "OR",
+        "subgoals": [
+          {
+            "goal": "boulders"
+          },
+          {
+            "goal": "exit"
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -30,10 +30,7 @@ public class EnemyStrat extends MercStrat {
     @Override
     public boolean interact(Player player, Mercenary mercenary) {
         player.startBattle(mercenary);
-        if (mercenary.getHealth() <= 0) {
-            return true;
-        }
-        return false;
+        return mercenary.getHealth() <= 0;
     }
 
     @Override

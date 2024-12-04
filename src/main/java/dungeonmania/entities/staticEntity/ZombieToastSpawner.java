@@ -1,24 +1,24 @@
 package dungeonmania.entities.staticEntity;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Random;
-
-import org.json.JSONObject;
-
+import dungeonmania.dtos.EntitiesDto;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
 import dungeonmania.game.Game;
 import dungeonmania.game.GameLauncher;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Random;
 
 public class ZombieToastSpawner extends StaticEntity {
 
     private int zombieSpawnRate;
     private int tickCounter = 1;
- 
+
     public ZombieToastSpawner() {
         super();
         setName("zombie_toast_spawner");
@@ -33,11 +33,11 @@ public class ZombieToastSpawner extends StaticEntity {
         }
 
         Position spawnerPos = this.getPosition();
-       
+
         Game activeGame = GameLauncher.getActiveGame();
-    
+
         Hashtable<Position, Direction> posDir = activeGame.posDirTranslation(spawnerPos);
-        ArrayList<Direction> adjacentTiles = new ArrayList<Direction>();
+        ArrayList<Direction> adjacentTiles = new ArrayList<>();
         adjacentTiles.add(Direction.LEFT);
         adjacentTiles.add(Direction.UP);
         adjacentTiles.add(Direction.RIGHT);
@@ -70,14 +70,14 @@ public class ZombieToastSpawner extends StaticEntity {
                     break;
                 }
             }
-            
+
             int zombieX = validPos.getX();
             int zombieY = validPos.getY();
             JSONObject zombieObj = new JSONObject();
             zombieObj.put("type", "zombie_toast");
             zombieObj.put("x", zombieX);
             zombieObj.put("y", zombieY);
-            Entity zombie = EntityFactory.createEntity(zombieObj);
+            Entity zombie = EntityFactory.createEntity(new EntitiesDto(zombieX, zombieY, "zombie_toast"));
             activeGame.addEntity(zombie);
         }
 
@@ -85,9 +85,9 @@ public class ZombieToastSpawner extends StaticEntity {
     }
 
     @Override
-    public void setupEntity(JSONObject entityConfig, Position position) {
+    public void setupEntity(EntitiesDto entitiesDto, Position position) {
         setPosition(position);
-        this.zombieSpawnRate = entityConfig.getInt("zombie_spawn_rate");
+        this.zombieSpawnRate = GameLauncher.getConfig().getZombieSpawnRate();
     }
 }
       

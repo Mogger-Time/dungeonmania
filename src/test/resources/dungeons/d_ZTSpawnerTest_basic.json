@@ -1,25 +1,27 @@
 {
-    "entities": [
-        {
-            "type" : "player",
-            "x" : 1,
-            "y" : 1
-        },
-        {
-            "type": "exit",
-            "x": 0,
-            "y": 0
-        },
-        {
-            "type": "sword",
-            "x": 1,
-            "y": 2
-        },
-        {
-            "type": "zombie_toast_spawner",
-            "x": 3,
-            "y": 3
-        }
-    ],
-    "goal-condition": {"goal": "exit"}
+  "entities": [
+    {
+      "type": "player",
+      "x": 1,
+      "y": 1
+    },
+    {
+      "type": "exit",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "type": "sword",
+      "x": 1,
+      "y": 2
+    },
+    {
+      "type": "zombie_toast_spawner",
+      "x": 3,
+      "y": 3
+    }
+  ],
+  "goal-condition": {
+    "goal": "exit"
+  }
 }

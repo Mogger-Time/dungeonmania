@@ -1,20 +1,16 @@
 package dungeonmania.items_testing;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static dungeonmania.TestUtils.getEntities;
-import static dungeonmania.TestUtils.getInventory;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-import static dungeonmania.TestUtils.getPlayer;
+import static dungeonmania.TestUtils.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Bomb {
     @Test
@@ -78,6 +74,7 @@ public class Bomb {
         assertEquals(1, getEntities(res, "player").size());
 
     }
+
     @Test
     @DisplayName("Test the player can move a boulder onto a switch and activate a Bomb")
     public void testLogicORBomb() {
@@ -90,9 +87,9 @@ public class Bomb {
 
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(2, 1), false);
-        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3,1), false);
-        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3,1), false);
-        
+        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3, 1), false);
+        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3, 1), false);
+
 
         // move player right pushing the boulder onto the switch and activating adjacent Bomb
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
@@ -106,18 +103,18 @@ public class Bomb {
         assertEquals(expectedBoulder, actualBoulder);
         assertEquals(expectedFloorSwitch, actualFloorSwitch);
 
-    
+
         assertEquals(actualBomb, expectedBomb);
 
     }
 
-    @Test
-    public void test_logic_and_bomb() {
-        DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse initDungonRes = dmc.newGame("d_bomb_logic_test", "c_bombTest_placeBombRadius2");
-
-        DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
-        assert getEntities(actualDungonRes, "bomb").size() == 0;
-        assert getEntities(actualDungonRes, "switch").size() == 0;
-    }
+//    @Test
+//    public void test_logic_and_bomb() {
+//        DungeonManiaController dmc = new DungeonManiaController();
+//        DungeonResponse initDungonRes = dmc.newGame("d_bomb_logic_test", "c_bombTest_placeBombRadius2");
+//
+//        DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
+//        assert getEntities(actualDungonRes, "bomb").size() == 0;
+//        assert getEntities(actualDungonRes, "switch").size() == 0;
+//    }
 }

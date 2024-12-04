@@ -9,13 +9,21 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.google.code.gson:gson:2.8.8'
-    implementation 'org.json:json:20210307'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'org.json:json:20231013'
     implementation 'com.sparkjava:spark-core:2.9.3'
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.+'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter:5.8.0'
     implementation 'org.reflections:reflections:0.10.2'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.0'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.13.0'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.4.2'
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.34'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
 }
 
 java {
@@ -52,9 +60,9 @@ mainClassName = 'App'
 allprojects {
   apply plugin: 'java'
 
-  tasks.withType(Copy).all {
-    duplicatesStrategy 'exclude'
-  }
+    tasks.withType(Copy).configureEach {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
 }
 
 test {
@@ -64,8 +72,8 @@ test {
 
 jacocoTestReport {
     reports {
-        xml.enabled true
-        html.enabled true
+        xml.required.set(true)
+        html.required.set(true)
     }
 
     afterEvaluate {
