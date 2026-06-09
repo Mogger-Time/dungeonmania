@@ -1,5 +1,6 @@
 package dungeonmania.goals;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.staticEntity.Boulder;
 import dungeonmania.entities.staticEntity.FloorSwitch;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
+@JsonTypeName("boulders")
 public class BouldersGoal implements Goal, Serializable {
 
     public boolean checkGoal(Game game) {

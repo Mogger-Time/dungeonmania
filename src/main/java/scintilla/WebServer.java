@@ -25,7 +25,7 @@ final class WebServer {
         });
     }
 
-    protected void finalize() {
+    public void awaitReady() {
         awaitInitialization();
     }
 

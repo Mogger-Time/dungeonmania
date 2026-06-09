@@ -1,19 +1,14 @@
 package dungeonmania.entities.staticEntity.logicalEntity;
 
 import dungeonmania.dtos.EntitiesDto;
-import dungeonmania.entities.Entity;
 import dungeonmania.entities.items.Item;
 import dungeonmania.entities.items.Key;
 import dungeonmania.entities.movingEntity.Player;
-import dungeonmania.entities.staticEntity.Boulder;
-import dungeonmania.entities.staticEntity.FloorSwitch;
-import dungeonmania.game.Game;
-import dungeonmania.game.GameLauncher;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SwitchDoor extends LogicalEntity {
@@ -37,157 +32,7 @@ public class SwitchDoor extends LogicalEntity {
     }
 
     public void checkActivated() {
-        Position swDoorPos = this.getPosition();
-        List<Position> adjacentSwDoor = new ArrayList<>();
-        int x = swDoorPos.getX();
-        int y = swDoorPos.getY();
-        adjacentSwDoor.add(new Position(x - 1, y));
-        adjacentSwDoor.add(new Position(x + 1, y));
-        adjacentSwDoor.add(new Position(x, y - 1));
-        adjacentSwDoor.add(new Position(x, y + 1));
-
-        Position boulderpos = null;
-        Position switchpos = null;
-        int numberActivated = 0;
-
-        Game activeGame = GameLauncher.getActiveGame();
-        setCollision(true);
-        switch (logic) {
-            case "or":
-                for (Position pos : adjacentSwDoor) {
-                    List<Entity> entsInPos = activeGame.getEntitiesinPos(pos);
-                    for (Entity entity : entsInPos) {
-                        if (entity instanceof Wire) {
-                            //If connected to activated wire
-                            if (((Wire) entity).isActivated()) {
-                                setCollision(false);
-                            }
-                        }
-                        if (entity instanceof Boulder) {
-                            boulderpos = pos;
-                        }
-                        if (entity instanceof FloorSwitch) {
-                            switchpos = pos;
-                        }
-                        //If wire is connected to an activated floor switch
-                        if (boulderpos == switchpos && boulderpos != null) {
-                            setCollision(false);
-                        }
-                    }
-                }
-
-            case "and":
-                for (Position pos : adjacentSwDoor) {
-                    List<Entity> entsInPos = activeGame.getEntitiesinPos(pos);
-                    for (Entity entity : entsInPos) {
-                        if (entity instanceof Wire) {
-                            //If connected to activated wire
-                            if (((Wire) entity).isActivated()) {
-                                numberActivated++;
-                            }
-                        }
-                        if (entity instanceof Boulder) {
-                            boulderpos = pos;
-                        }
-                        if (entity instanceof FloorSwitch) {
-                            switchpos = pos;
-                        }
-                        //If wire is connected to an activated floor switch
-                        if (boulderpos == switchpos && boulderpos != null) {
-                            numberActivated++;
-                        }
-                        if (numberActivated > 1) {
-                            setCollision(false);
-                        }
-                    }
-                }
-                break;
-
-            case "xor":
-                for (Position pos : adjacentSwDoor) {
-                    List<Entity> entsInPos = activeGame.getEntitiesinPos(pos);
-                    for (Entity entity : entsInPos) {
-                        if (entity instanceof Wire) {
-                            //If connected to activated wire
-                            if (((Wire) entity).isActivated()) {
-                                numberActivated++;
-                            }
-
-                        }
-                        if (entity instanceof Boulder) {
-                            boulderpos = pos;
-                        }
-                        if (entity instanceof FloorSwitch) {
-                            switchpos = pos;
-                        }
-                        //If wire is connected to an activated floor switch
-                        if (boulderpos == switchpos && boulderpos != null) {
-                            numberActivated++;
-                        }
-
-                    }
-
-                }
-                if (numberActivated == 1) {
-                    setCollision(false);
-                }
-                break;
-
-
-            case "co_and":
-                Position activated1 = null;
-                Position activated2 = null;
-                Position activated3 = null;
-                Position activated4 = null;
-                boolean sametick = false;
-                for (Position pos : adjacentSwDoor) {
-                    List<Entity> entsInPos = activeGame.getEntitiesinPos(pos);
-                    for (Entity entity : entsInPos) {
-                        if (entity instanceof Wire) {
-                            //If connected to activated wire
-                            if (((Wire) entity).isActivated()) {
-                                numberActivated++;
-                            }
-
-                        }
-                        if (entity instanceof Boulder) {
-                            boulderpos = pos;
-                        }
-                        if (entity instanceof FloorSwitch) {
-                            switchpos = pos;
-                        }
-                        //If wire is connected to an activated floor switch
-                        //If wire is connected to same activated floor switch
-                        if (boulderpos == switchpos && boulderpos != null) {
-                            if (activated1 == null) {
-                                numberActivated++;
-                                activated1 = pos;
-                            }
-                            if (activated2 == null) {
-                                numberActivated++;
-                                activated2 = pos;
-                            }
-                            if (activated3 == null) {
-                                numberActivated++;
-                                activated3 = pos;
-                            }
-                            if (activated4 == null) {
-                                numberActivated++;
-                                activated4 = pos;
-                            }
-                        }
-                        // If same boulder then activated on same tick
-                        if ((activated1 == activated2) || (activated1 == activated3) || (activated1 == activated4) || (activated2 == activated3) ||
-                                (activated2 == activated4) || (activated3 == activated4)) {
-                            sametick = true;
-                        }
-                    }
-                }
-                if (numberActivated > 1 && sametick) {
-                    setCollision(false);
-                }
-
-        }
+        setCollision(!LogicActivationEvaluator.isActivated(logic, GameRuntimeContext.getActiveGame(), getPosition()));
     }
 
     @Override

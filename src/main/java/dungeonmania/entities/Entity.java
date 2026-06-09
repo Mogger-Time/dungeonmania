@@ -6,6 +6,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,10 +33,12 @@ public abstract class Entity {
         return this.position.translateBy(direction);
     }
 
+    @JsonIgnore
     public EntityResponse getEntityResponse() {
         return new EntityResponse(this.entityID, this.name, this.position, this.interactable);
     }
 
+    @JsonIgnore
     public ItemResponse getItemResponse() {
         return new ItemResponse(this.entityID, this.name);
     }

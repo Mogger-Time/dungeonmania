@@ -1,6 +1,7 @@
 package dungeonmania.entities.movingEntity;
 
 import dungeonmania.dtos.EntitiesDto;
+import dungeonmania.entities.InteractableEntity;
 import dungeonmania.entities.movingEntity.mercStrategy.BribedStrat;
 import dungeonmania.entities.movingEntity.mercStrategy.EnemyStrat;
 import dungeonmania.entities.movingEntity.mercStrategy.MercStrat;
@@ -8,14 +9,14 @@ import dungeonmania.entities.movingEntity.movementStrategy.FollowStrategy;
 import dungeonmania.entities.movingEntity.movementStrategy.MovementStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.PlayerStrategy;
 import dungeonmania.game.Game;
-import dungeonmania.game.GameLauncher;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.util.Position;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Mercenary extends Enemy {
+public class Mercenary extends Enemy implements InteractableEntity {
 
     private int bribeRadius;
     private int bribeAmount;
@@ -31,10 +32,10 @@ public class Mercenary extends Enemy {
     @Override
     public void setupEntity(EntitiesDto entitiesDto, Position position) {
         super.setPosition(position);
-        super.setHealth(GameLauncher.getConfig().getMercenaryHealth());
-        super.setDamage(GameLauncher.getConfig().getMercenaryAttack());
-        this.bribeRadius = GameLauncher.getConfig().getBribeRadius();
-        this.bribeAmount = GameLauncher.getConfig().getBribeAmount();
+        super.setHealth(GameRuntimeContext.getConfig().getMercenaryHealth());
+        super.setDamage(GameRuntimeContext.getConfig().getMercenaryAttack());
+        this.bribeRadius = GameRuntimeContext.getConfig().getBribeRadius();
+        this.bribeAmount = GameRuntimeContext.getConfig().getBribeAmount();
     }
 
     public void alert(PlayerStrategy strat) {
@@ -74,5 +75,10 @@ public class Mercenary extends Enemy {
     public boolean bribe() {
         allystatus = new BribedStrat(1);
         return true;
+    }
+
+    @Override
+    public void interact(Game game, Player player) throws dungeonmania.exceptions.InvalidActionException {
+        player.bribe(this);
     }
 }

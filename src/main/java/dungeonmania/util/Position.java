@@ -1,6 +1,8 @@
 package dungeonmania.util;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,8 @@ import java.util.Objects;
 public final class Position {
     private final int x, y, layer;
 
-    public Position(int x, int y, int layer) {
+    @JsonCreator
+    public Position(@JsonProperty("x") int x, @JsonProperty("y") int y, @JsonProperty("layer") int layer) {
         this.x = x;
         this.y = y;
         this.layer = layer;
@@ -52,7 +55,8 @@ public final class Position {
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y, layer);
+        // Keep hashCode aligned with equals, which compares x and y only.
+        return Objects.hash(x, y);
     }
 
     @Override

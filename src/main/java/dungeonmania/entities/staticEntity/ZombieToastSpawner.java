@@ -3,18 +3,23 @@ package dungeonmania.entities.staticEntity;
 import dungeonmania.dtos.EntitiesDto;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
+import dungeonmania.entities.InteractableEntity;
+import dungeonmania.entities.items.BattleItem;
+import dungeonmania.entities.items.Sword;
+import dungeonmania.entities.movingEntity.Player;
+import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.game.Game;
-import dungeonmania.game.GameLauncher;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
-import org.json.JSONObject;
+import dungeonmania.util.RandomProvider;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Random;
+import java.util.stream.Collectors;
 
-public class ZombieToastSpawner extends StaticEntity {
+public class ZombieToastSpawner extends StaticEntity implements InteractableEntity {
 
     private int zombieSpawnRate;
     private int tickCounter = 1;
@@ -34,7 +39,7 @@ public class ZombieToastSpawner extends StaticEntity {
 
         Position spawnerPos = this.getPosition();
 
-        Game activeGame = GameLauncher.getActiveGame();
+        Game activeGame = GameRuntimeContext.getActiveGame();
 
         Hashtable<Position, Direction> posDir = activeGame.posDirTranslation(spawnerPos);
         ArrayList<Direction> adjacentTiles = new ArrayList<>();
@@ -57,8 +62,7 @@ public class ZombieToastSpawner extends StaticEntity {
         // Zombie will spawn at every X ticks if there are valid positions to spawn in
         if (tickCounter % zombieSpawnRate == 0 && noOfPositions > 0) {
             // Get random valid spawn position
-            Random rand = new Random();
-            int dirIndex = rand.nextInt(noOfPositions);
+            int dirIndex = RandomProvider.nextInt(noOfPositions);
 
             // Add zombie to dungeon
             Position validPos = null;
@@ -73,10 +77,6 @@ public class ZombieToastSpawner extends StaticEntity {
 
             int zombieX = validPos.getX();
             int zombieY = validPos.getY();
-            JSONObject zombieObj = new JSONObject();
-            zombieObj.put("type", "zombie_toast");
-            zombieObj.put("x", zombieX);
-            zombieObj.put("y", zombieY);
             Entity zombie = EntityFactory.createEntity(new EntitiesDto(zombieX, zombieY, "zombie_toast"));
             activeGame.addEntity(zombie);
         }
@@ -87,7 +87,21 @@ public class ZombieToastSpawner extends StaticEntity {
     @Override
     public void setupEntity(EntitiesDto entitiesDto, Position position) {
         setPosition(position);
-        this.zombieSpawnRate = GameLauncher.getConfig().getZombieSpawnRate();
+        this.zombieSpawnRate = GameRuntimeContext.getConfig().getZombieSpawnRate();
+    }
+
+    @Override
+    public void interact(Game game, Player player) throws InvalidActionException {
+        if (!Position.isAdjacent(getPosition(), player.getPosition())) {
+            throw new InvalidActionException("Not adjacent to ZTS");
+        }
+        List<BattleItem> swords = player.getBattleItems().stream()
+                .filter(Sword.class::isInstance)
+                .collect(Collectors.toList());
+        if (swords.isEmpty()) {
+            throw new InvalidActionException("No sword");
+        }
+        game.removeEntity(this);
     }
 }
       

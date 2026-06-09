@@ -5,7 +5,6 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.items.*;
 import dungeonmania.entities.movingEntity.Enemy;
-import dungeonmania.entities.movingEntity.Mercenary;
 import dungeonmania.entities.movingEntity.Player;
 import dungeonmania.entities.movingEntity.playerStrategy.PlayerStrategy;
 import dungeonmania.entities.staticEntity.*;
@@ -19,11 +18,14 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.PosDirWrapper;
 import dungeonmania.util.Position;
+import dungeonmania.util.RandomProvider;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 @Getter
@@ -38,6 +40,14 @@ public class Game {
     private final int initialenemies;
     private Player player;
     private int gameTick;
+    @JsonIgnore
+    private transient DungeonResponseMapper responseMapper = new DungeonResponseMapper();
+    @JsonIgnore
+    private transient WorldUpdateService worldUpdateService = new WorldUpdateService();
+    @JsonIgnore
+    private transient InteractionService interactionService = new InteractionService();
+    @JsonIgnore
+    private transient PathfindingService pathfindingService = new PathfindingService();
 
     public Game(String dungeonName, String configName, List<Entity> entities, Goal goal) {
         this.dungeonID = dungeonName + UUID.randomUUID();
@@ -56,6 +66,26 @@ public class Game {
         initialenemies = getEnemies().size();
     }
 
+    @JsonCreator
+    public Game(@JsonProperty("dungeonID") String dungeonID,
+                @JsonProperty("dungeonName") String dungeonName,
+                @JsonProperty("configName") String configName,
+                @JsonProperty("entities") List<Entity> entities,
+                @JsonProperty("goal") Goal goal,
+                @JsonProperty("initialEnemies") int initialEnemies,
+                @JsonProperty("player") Player player,
+                @JsonProperty("gameTick") int gameTick) {
+        this.dungeonID = dungeonID;
+        this.dungeonName = dungeonName;
+        this.configName = configName;
+        this.entities = entities != null ? entities : new ArrayList<>();
+        this.goal = goal;
+        this.player = player;
+        this.gameTick = gameTick;
+        this.initialenemies = initialEnemies;
+        ensureServices();
+    }
+
     public int getInitialEnemies() {
         return initialenemies;
     }
@@ -72,6 +102,7 @@ public class Game {
         entities.remove(entity);
     }
 
+    @JsonIgnore
     public List<Enemy> getEnemies() {
 
         List<Enemy> enemies = new ArrayList<>();
@@ -85,6 +116,7 @@ public class Game {
         return enemies;
     }
 
+    @JsonIgnore
     public List<Bomb> getBombs() {
         List<Bomb> bombs = new ArrayList<>();
         for (Entity entity : entities) {
@@ -95,6 +127,7 @@ public class Game {
         return bombs;
     }
 
+    @JsonIgnore
     public int getTreasures() {
         int treasurecount = 0;
 
@@ -106,6 +139,7 @@ public class Game {
         return treasurecount;
     }
 
+    @JsonIgnore
     public List<FloorSwitch> getFloorSwitches() {
         List<FloorSwitch> switches = new ArrayList<>();
         for (Entity entity : entities) {
@@ -116,6 +150,7 @@ public class Game {
         return switches;
     }
 
+    @JsonIgnore
     public List<ZombieToastSpawner> getZombieToastSpawners() {
         List<ZombieToastSpawner> spawners = new ArrayList<>();
         for (Entity entity : entities) {
@@ -126,6 +161,7 @@ public class Game {
         return spawners;
     }
 
+    @JsonIgnore
     public List<LightBulb> getLightBulbs() {
         List<LightBulb> lightbulbs = new ArrayList<>();
         for (Entity entity : entities) {
@@ -136,6 +172,7 @@ public class Game {
         return lightbulbs;
     }
 
+    @JsonIgnore
     public List<Wire> getWires() {
         List<Wire> wires = new ArrayList<>();
         for (Entity entity : entities) {
@@ -146,6 +183,7 @@ public class Game {
         return wires;
     }
 
+    @JsonIgnore
     public List<SwitchDoor> getSwitchDoors() {
         List<SwitchDoor> switchDoors = new ArrayList<>();
         for (Entity entity : entities) {
@@ -156,18 +194,22 @@ public class Game {
         return switchDoors;
     }
 
+    @JsonIgnore
     public List<Entity> getPlayerEntities() {
         return getEntitiesinPos(player.getPosition());
     }
 
+    @JsonIgnore
     public PlayerStrategy getPlayerStrategy() {
         return player.getStrategy();
     }
 
+    @JsonIgnore
     public List<Entity> getEntitiesinPos(Position position) {
         return entities.stream().filter(s -> (s.getPosition().equals(position))).collect(Collectors.toList());
     }
 
+    @JsonIgnore
     public Hashtable<Position, Direction> posDirTranslation(Position position) {
         return new Hashtable<>() {{
             put(new Position(position.getX() - 1, position.getY()), Direction.LEFT);
@@ -177,6 +219,7 @@ public class Game {
         }};
     }
 
+    @JsonIgnore
     public ArrayList<Direction> getValidAdjacentTiles(Position position) {
         Hashtable<Position, Direction> posDir = posDirTranslation(position);
         ArrayList<Direction> adjacentTiles = new ArrayList<>();
@@ -198,6 +241,7 @@ public class Game {
         return adjacentTiles;
     }
 
+    @JsonIgnore
     public boolean noBouldersNext(Direction direction, Position position) {
         Position newPosition = position.translateBy(direction);
         List<Entity> entitiesOnTile = getEntitiesinPos(newPosition);
@@ -209,59 +253,26 @@ public class Game {
         return true;
     }
 
+    @JsonIgnore
     public DungeonResponse getDungeonResponse() {
-
-        List<EntityResponse> entityResponses = new ArrayList<>();
-        for (Entity entity : entities) {
-            entityResponses.add(entity.getEntityResponse());
-        }
-        if (player.getHealth() > 0) {
-            entityResponses.add(player.getEntityResponse());
-        }
-
-        return new DungeonResponse(dungeonID, dungeonName, entityResponses, player.getInvResponse(), player.getBattleResponses(), player.getBuildables(), goal.printcurGoal(this));
+        ensureServices();
+        return responseMapper.map(this);
     }
 
     public void updateGame() {
-        for (Enemy enemy : getEnemies()) {
-            enemy.move(this);
-        }
-        for (ZombieToastSpawner spawner : getZombieToastSpawners()) {
-            spawner.spawnZombie();
-        }
-        for (Wire wire : getWires()) {
-            wire.checkActivated();
-        }
-        for (Bomb bomb : getBombs()) {
-            bomb.checkStatus(this);
-        }
-        for (LightBulb lightbulb : getLightBulbs()) {
-            lightbulb.checkActivated();
-        }
-        for (SwitchDoor switchdoor : getSwitchDoors()) {
-            switchdoor.checkActivated();
-        }
-        List<Entity> delentities = new ArrayList<>();
-        for (Entity entity : getPlayerEntities()) {
-            if (entity.interact(player)) {
-                delentities.add(entity);
-            }
-        }
-        spawnSpiders();
-        entities.removeAll(delentities);
-        player.updateStrat(this);
-        gameTick++;
+        ensureServices();
+        worldUpdateService.update(this);
     }
 
     public void spawnSpiders() {
-        int spawnRate = GameLauncher.getConfig().getSpiderSpawnRate();
+        int spawnRate = GameRuntimeContext.getConfig().getSpiderSpawnRate();
 
         if (spawnRate == 0) {
             return;
         }
 
-        int x = (int) (Math.random() * 10);
-        int y = (int) (Math.random() * 10);
+        int x = RandomProvider.nextInt(10);
+        int y = RandomProvider.nextInt(10);
 
         if (gameTick % spawnRate == 0) {
             this.addEntity(EntityFactory.createEntity(new EntitiesDto(x, y, "spider")));
@@ -305,143 +316,34 @@ public class Game {
     }
 
     public void interact(String entityId) throws InvalidActionException {
-        Entity entityfound = null;
-        for (Entity entity : entities) {
-            if (entityId.equals(entity.getEntityID())) {
-                entityfound = entity;
-                break;
-            }
-        }
-        if (entityfound == null) {
-            throw new IllegalArgumentException("No entity exists");
-        }
-        if (entityfound instanceof ZombieToastSpawner) {
-            if (!Position.isAdjacent(entityfound.getPosition(), player.getPosition())) {
-                throw new InvalidActionException("Not adjacent to ZTS");
-            }
-            List<BattleItem> battleItems = player.getBattleItems();
-            List<BattleItem> swords = battleItems.stream().filter(s -> (s instanceof Sword)).collect(Collectors.toList());
-            if (swords.isEmpty()) {
-                throw new InvalidActionException("No sword");
-            }
-            entities.remove(entityfound);
-        } else if (entityfound instanceof Mercenary) {
-            Mercenary merc = (Mercenary) entityfound;
-            player.bribe(merc);
-        } else {
-            throw new InvalidActionException("Entity can not be interacted with");
-        }
+        ensureServices();
+        interactionService.interact(this, entityId);
     }
 
+    @JsonIgnore
     public List<Integer> getDimensions(Position destination) {
-        int leftmost = 0;
-        int rightmost = 0;
-        int upmost = 0;
-        int downmost = 0;
-        for (Entity entity : entities) {
-            Position entpos = entity.getPosition();
-            if (entpos.getX() < leftmost) {
-                leftmost = entpos.getX();
-            } else if (entpos.getX() > rightmost) {
-                rightmost = entpos.getX();
-            }
-            if (entpos.getY() < upmost) {
-                upmost = entpos.getY();
-            } else if (entpos.getY() > downmost) {
-                downmost = entpos.getY();
-            }
-        }
-        if (destination.getX() < leftmost) {
-            leftmost = destination.getX();
-        } else if (destination.getX() > rightmost) {
-            rightmost = destination.getX();
-        }
-        if (destination.getY() < upmost) {
-            upmost = destination.getY();
-        } else if (destination.getY() > downmost) {
-            downmost = destination.getY();
-        }
-        leftmost--;
-        upmost--;
-        rightmost++;
-        downmost++;
-        List<Integer> dimensions = new ArrayList<>();
-        dimensions.add(leftmost);
-        dimensions.add(upmost);
-        dimensions.add(rightmost);
-        dimensions.add(downmost);
-        return dimensions;
+        ensureServices();
+        return pathfindingService.getDimensions(this, destination);
     }
 
+    @JsonIgnore
     public Map<Position, PosDirWrapper> getPath(Entity source, Position destination) {
-        List<Integer> grid = getDimensions(destination);
-        int leftbound = grid.get(0);
-        int rightbound = grid.get(2);
-        int upbound = grid.get(1);
-        int downbound = grid.get(3);
-        Map<Position, Double> distance = new HashMap<>();
-        //Position key is the current position
-        //PosDirWrapper.getPosition is the previous position
-        //PosDirWrapper.getDirection is the direction taken from prev to get to current
-        Map<Position, PosDirWrapper> previous = new HashMap<>();
-        List<Position> visited = new ArrayList<>();
-        List<Position> queue = new ArrayList<>();
-        for (int i = leftbound; i <= rightbound; i++) {
-            for (int j = upbound; j <= downbound; j++) {
-                Position node = new Position(i, j);
-                distance.put(node, Double.MAX_VALUE);
-            }
+        ensureServices();
+        return pathfindingService.getPath(this, source, destination);
+    }
+
+    private void ensureServices() {
+        if (responseMapper == null) {
+            responseMapper = new DungeonResponseMapper();
         }
-        distance.put(source.getPosition(), 0.0);
-        queue.add(source.getPosition());
-        while (!queue.isEmpty()) {
-            Position temp = null;
-            Double smallestdistance = Double.MAX_VALUE;
-            for (Position pos : queue) {
-                if (distance.get(pos) < smallestdistance) {
-                    temp = pos;
-                    smallestdistance = distance.get(pos);
-                }
-            }
-            visited.add(temp);
-            queue.remove(temp);
-            if (temp.equals(destination)) {
-                break;
-            }
-            for (Entry<Position, Direction> entry : posDirTranslation(temp).entrySet()) {
-                Position adjPos = entry.getKey();
-                Direction dirto = entry.getValue();
-                if (leftbound <= adjPos.getX() && adjPos.getX() <= rightbound && upbound <= adjPos.getY() && adjPos.getY() <= downbound) {
-                    int cost = 1;
-                    List<Entity> entitiesatPos = getEntitiesinPos(adjPos);
-                    for (Entity possibleportal : entitiesatPos) {
-                        if (possibleportal instanceof Portal) {
-                            Portal foundportal = (Portal) possibleportal;
-                            adjPos = foundportal.getnewLoc(dirto, this);
-                        }
-                        if (possibleportal.getCollision()) {
-                            adjPos = null;
-                        }
-                        if (possibleportal instanceof SwampTile) {
-                            SwampTile foundswamp = (SwampTile) possibleportal;
-                            cost = cost + foundswamp.getFactor();
-                        }
-                    }
-                    if (adjPos == null) {
-                        continue;
-                    }
-                    if (!visited.contains(adjPos)) {
-                        if (!queue.contains(adjPos)) {
-                            queue.add(adjPos);
-                        }
-                        if (distance.get(temp) + cost < distance.get(adjPos)) {
-                            distance.put(adjPos, (distance.get(temp) + cost));
-                            previous.put(adjPos, new PosDirWrapper(temp, dirto));
-                        }
-                    }
-                }
-            }
+        if (worldUpdateService == null) {
+            worldUpdateService = new WorldUpdateService();
         }
-        return previous;
+        if (interactionService == null) {
+            interactionService = new InteractionService();
+        }
+        if (pathfindingService == null) {
+            pathfindingService = new PathfindingService();
+        }
     }
 }

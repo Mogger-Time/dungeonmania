@@ -12,7 +12,7 @@ public class Scintilla {
     }
 
     public static void start() {
-        INSTANCE.finalize();
+        INSTANCE.awaitReady();
         PlatformUtils.openBrowserAtPath(INSTANCE.getHostUrl() + "/app/");
     }
 }

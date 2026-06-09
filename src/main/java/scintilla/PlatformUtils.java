@@ -1,6 +1,9 @@
 package scintilla;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 final class PlatformUtils {
@@ -19,31 +22,31 @@ final class PlatformUtils {
             return false;
         }
 
-        String command;
+        List<String> command;
 
         // Determine what command to run based on if we are Windows/Mac/Linux
         switch (determineOperatingSystem()) {
             case MacOS:
-                command = "open";
+                command = Arrays.asList("open", path);
                 break;
             case Windows:
-                command = "rundll32 url.dll,FileProtocolHandler";
+                command = Arrays.asList("rundll32", "url.dll,FileProtocolHandler", path);
                 break;
             case Unknown:
             default:
             case Linux:
                 //  if it's an unknown file system we'll just open it as linux since it's most likely something like Solaris
-                command = "xdg-open";
+                command = Arrays.asList("xdg-open", path);
                 break;
         }
 
         try {
-            // get a shell instance and execute the open browser command
-            Runtime runtime = Runtime.getRuntime();
-            runtime.exec(command + " " + path);
+            // Build command safely so paths/URLs with spaces are handled correctly.
+            ProcessBuilder processBuilder = new ProcessBuilder(new ArrayList<>(command));
+            processBuilder.start();
             return true;
         } catch (IOException e) {
-            System.err.println("Failed to open browser (" + command + " " + path + ")");
+            System.err.println("Failed to open browser (" + String.join(" ", command) + ")");
             e.printStackTrace(System.err);
             return false;
         }

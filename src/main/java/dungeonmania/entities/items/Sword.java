@@ -1,7 +1,7 @@
 package dungeonmania.entities.items;
 
 import dungeonmania.dtos.EntitiesDto;
-import dungeonmania.game.GameLauncher;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.util.Position;
 
 public class Sword extends BattleItem {
@@ -16,7 +16,7 @@ public class Sword extends BattleItem {
     @Override
     public void setupEntity(EntitiesDto entitiesDto, Position position) {
         super.setPosition(position);
-        setDurability(GameLauncher.getConfig().getSwordDurability());
-        setAttack(GameLauncher.getConfig().getSwordAttack());
+        setDurability(GameRuntimeContext.getConfig().getSwordDurability());
+        setAttack(GameRuntimeContext.getConfig().getSwordAttack());
     }
 }

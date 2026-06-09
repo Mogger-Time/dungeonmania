@@ -1,7 +1,7 @@
 package dungeonmania.entities.items;
 
 import dungeonmania.dtos.EntitiesDto;
-import dungeonmania.game.GameLauncher;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.util.Position;
 
 import java.util.List;
@@ -36,6 +36,6 @@ public class Bow extends BattleItem implements Buildable {
 
     @Override
     public void setupEntity(EntitiesDto entitiesDto, Position position) {
-        setDurability(GameLauncher.getConfig().getBowDurability());
+        setDurability(GameRuntimeContext.getConfig().getBowDurability());
     }
 }

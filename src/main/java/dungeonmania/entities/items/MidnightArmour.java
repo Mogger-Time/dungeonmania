@@ -4,7 +4,7 @@ import dungeonmania.dtos.EntitiesDto;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.movingEntity.ZombieToast;
 import dungeonmania.game.Game;
-import dungeonmania.game.GameLauncher;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.util.Position;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class MidnightArmour extends BattleItem implements Buildable {
         List<Item> sword = inventory.stream().filter(s -> (s instanceof Sword)).collect(Collectors.toList());
         List<Item> sunstone = inventory.stream().filter(s -> (s instanceof SunStone)).collect(Collectors.toList());
 
-        Game activeGame = GameLauncher.getActiveGame();
+        Game activeGame = GameRuntimeContext.getActiveGame();
         List<Entity> entities = activeGame.getEntities();
         List<Entity> zombie = entities.stream().filter(s -> (s instanceof ZombieToast)).collect(Collectors.toList());
 
@@ -36,15 +36,15 @@ public class MidnightArmour extends BattleItem implements Buildable {
     @Override
     public void setupEntity(EntitiesDto entitiesDto, Position position) {
         super.setPosition(position);
-        super.setAttack(GameLauncher.getConfig().getMidnightArmourAttack());
-        super.setDefence(GameLauncher.getConfig().getMidnightArmourDefence());
+        super.setAttack(GameRuntimeContext.getConfig().getMidnightArmourAttack());
+        super.setDefence(GameRuntimeContext.getConfig().getMidnightArmourDefence());
     }
 
     public boolean isBuildable(List<Item> inventory) {
         List<Item> sword = inventory.stream().filter(s -> (s instanceof Sword)).collect(Collectors.toList());
         List<Item> sunstone = inventory.stream().filter(s -> (s instanceof SunStone)).collect(Collectors.toList());
 
-        Game activeGame = GameLauncher.getActiveGame();
+        Game activeGame = GameRuntimeContext.getActiveGame();
         List<Entity> entities = activeGame.getEntities();
         List<Entity> zombie = entities.stream().filter(s -> (s instanceof ZombieToast)).collect(Collectors.toList());
 

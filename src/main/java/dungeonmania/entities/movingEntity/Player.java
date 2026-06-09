@@ -1,5 +1,7 @@
 package dungeonmania.entities.movingEntity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dungeonmania.Battle;
 import dungeonmania.dtos.EntitiesDto;
 import dungeonmania.entities.items.*;
@@ -8,7 +10,7 @@ import dungeonmania.entities.movingEntity.playerStrategy.NormalStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.PlayerStrategy;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.game.Game;
-import dungeonmania.game.GameLauncher;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Position;
@@ -30,6 +32,7 @@ public class Player extends MovingEntity {
     private transient List<Mercenary> ally = new ArrayList<>();
     private double allyattack;
     private double allydefence;
+    @JsonProperty("prev_pos")
     private Position prevpos;
 
     public Player() {
@@ -43,10 +46,10 @@ public class Player extends MovingEntity {
 
     @Override
     public void setupEntity(EntitiesDto entitiesDto, Position position) {
-        setDamage(GameLauncher.getConfig().getPlayerAttack());
-        setHealth(GameLauncher.getConfig().getPlayerHealth());
-        setAllyattack(GameLauncher.getConfig().getAllyAttack());
-        setAllydefence(GameLauncher.getConfig().getAllyDefence());
+        setDamage(GameRuntimeContext.getConfig().getPlayerAttack());
+        setHealth(GameRuntimeContext.getConfig().getPlayerHealth());
+        setAllyattack(GameRuntimeContext.getConfig().getAllyAttack());
+        setAllydefence(GameRuntimeContext.getConfig().getAllyDefence());
         setInteractable(false);
         setPosition(position);
     }
@@ -59,6 +62,7 @@ public class Player extends MovingEntity {
         inventory.remove(item);
     }
 
+    @JsonIgnore
     public List<ItemResponse> getInvResponse() {
         List<ItemResponse> responses = new ArrayList<>();
         for (Item item : inventory) {
@@ -67,6 +71,7 @@ public class Player extends MovingEntity {
         return responses;
     }
 
+    @JsonIgnore
     public List<BattleItem> getBattleItems() {
         return strategy.getBattleItems(inventory);
     }
@@ -94,6 +99,7 @@ public class Player extends MovingEntity {
         }
     }
 
+    @JsonIgnore
     public List<BattleResponse> getBattleResponses() {
         List<BattleResponse> battleResponses = new ArrayList<>();
         for (Battle battle : battles) {
@@ -105,7 +111,7 @@ public class Player extends MovingEntity {
     public void addStrat(PlayerStrategy newstate) {
         if (strategy instanceof NormalStrategy) {
             strategy = newstate;
-            Game activegame = GameLauncher.getActiveGame();
+            Game activegame = GameRuntimeContext.getActiveGame();
             for (Enemy enemy : activegame.getEnemies()) {
                 enemy.alert(strategy);
             }
@@ -140,6 +146,7 @@ public class Player extends MovingEntity {
         }
     }
 
+    @JsonIgnore
     public List<String> getBuildables() {
         List<String> buildables = new ArrayList<>();
         if (Bow.checkBuildable(inventory)) {
@@ -200,6 +207,7 @@ public class Player extends MovingEntity {
         queuedstrats = playerQueuedStrategies;
     }
 
+    @JsonIgnore
     public Position getprevPos() {
         return prevpos;
     }

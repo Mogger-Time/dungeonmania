@@ -1,7 +1,7 @@
 package dungeonmania.entities.items;
 
 import dungeonmania.dtos.EntitiesDto;
-import dungeonmania.game.GameLauncher;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.util.Position;
 import lombok.Getter;
 
@@ -39,7 +39,7 @@ public class Sceptre extends Item implements Buildable {
     @Override
     public void setupEntity(EntitiesDto entitiesDto, Position position) {
         super.setPosition(position);
-        this.mindControlDuration = GameLauncher.getConfig().getMindControlDuration();
+        this.mindControlDuration = GameRuntimeContext.getConfig().getMindControlDuration();
     }
 
     @Override

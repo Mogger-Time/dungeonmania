@@ -12,7 +12,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'org.json:json:20231013'
     implementation 'com.sparkjava:spark-core:2.9.3'
-    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.+'
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.36'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter:5.8.0'
     implementation 'org.reflections:reflections:0.10.2'
@@ -89,3 +89,33 @@ jacocoTestReport {
 
     dependsOn test
 }
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.75
+            }
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.60
+            }
+        }
+    }
+
+    afterEvaluate {
+        classDirectories.from = files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: ['**App**',
+                              'scintilla/**',
+                              'dungeonmania/util/**',
+                              'dungeonmania/response/models/**',
+                              'dungeonmania/exceptions/**'])
+        })
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification

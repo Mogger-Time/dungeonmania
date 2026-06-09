@@ -3,7 +3,7 @@ package dungeonmania.entities.movingEntity;
 import dungeonmania.dtos.EntitiesDto;
 import dungeonmania.entities.movingEntity.movementStrategy.ClockwiseStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.PlayerStrategy;
-import dungeonmania.game.GameLauncher;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.util.Position;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,9 +23,9 @@ public class Spider extends Enemy {
     @Override
     public void setupEntity(EntitiesDto entitiesDto, Position position) {
         super.setPosition(position);
-        super.setHealth(GameLauncher.getConfig().getSpiderHealth());
-        super.setDamage(GameLauncher.getConfig().getSpiderAttack());
-        this.setSpawnRate(GameLauncher.getConfig().getSpiderSpawnRate());
+        super.setHealth(GameRuntimeContext.getConfig().getSpiderHealth());
+        super.setDamage(GameRuntimeContext.getConfig().getSpiderAttack());
+        this.setSpawnRate(GameRuntimeContext.getConfig().getSpiderSpawnRate());
     }
 
     public void alert(PlayerStrategy strat) {

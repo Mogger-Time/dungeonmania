@@ -5,7 +5,7 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.movingEntity.MovingEntity;
 import dungeonmania.entities.movingEntity.Player;
 import dungeonmania.game.Game;
-import dungeonmania.game.GameLauncher;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 import lombok.Getter;
@@ -25,7 +25,7 @@ public class Portal extends StaticEntity {
     }
 
     public Position findotherPortal() {
-        List<Entity> entities = GameLauncher.getEntities();
+        List<Entity> entities = GameRuntimeContext.getActiveGame().getEntities();
         for (Entity entity : entities) {
             if (entity instanceof Portal) {
                 Portal portalExit = (Portal) entity;
@@ -38,7 +38,7 @@ public class Portal extends StaticEntity {
     }
 
     public void enterPortal(MovingEntity entity, Direction movement) {
-        Game activeGame = GameLauncher.getActiveGame();
+        Game activeGame = GameRuntimeContext.getActiveGame();
 
         // Find coordinates of corresponding portal
         Position newpos = getnewLoc(movement, activeGame);

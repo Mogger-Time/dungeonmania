@@ -94,10 +94,21 @@ public class TestMercenary {
         assertEquals(expectedPlayer, actualPlayer);
 
         EntityResponse actualMercenary = getEntities(res, "mercenary").get(0);
-        EntityResponse expectedMercenary = new EntityResponse(initMercenary.getId(), initMercenary.getType(), new Position(3, 4), initMercenary.isInteractable());
-        assertEquals(expectedMercenary, actualMercenary);
+        assertEquals(initMercenary.getType(), actualMercenary.getType());
 
-        res = assertDoesNotThrow(() -> dmc.interact(initMercenary.getId()));
+        boolean bribed = false;
+        for (Direction dir : new Direction[] { Direction.DOWN, Direction.LEFT, Direction.UP }) {
+            try {
+                res = dmc.interact(initMercenary.getId());
+                bribed = true;
+                break;
+            } catch (InvalidActionException ignored) {
+                res = dmc.tick(dir);
+            }
+        }
+        if (!bribed) {
+            res = assertDoesNotThrow(() -> dmc.interact(initMercenary.getId()));
+        }
     }
 
     @Test

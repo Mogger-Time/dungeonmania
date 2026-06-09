@@ -1,18 +1,18 @@
 package dungeonmania.goals;
 
 import dungeonmania.dtos.GoalConditionDto;
-import dungeonmania.game.GameLauncher;
+import dungeonmania.game.GameRuntimeContext;
 
 public class GoalFactory {
 
     public static Goal createGoal(GoalConditionDto goalConditionDto) {
         switch (goalConditionDto.getGoal()) {
             case "enemies":
-                return new EnemiesGoal(GameLauncher.getConfig().getEnemyGoal());
+                return new EnemiesGoal(GameRuntimeContext.getConfig().getEnemyGoal());
             case "boulders":
                 return new BouldersGoal();
             case "treasure":
-                return new TreasureGoal(GameLauncher.getConfig().getTreasureGoal());
+                return new TreasureGoal(GameRuntimeContext.getConfig().getTreasureGoal());
             case "exit":
                 return new ExitGoal();
             case "AND":

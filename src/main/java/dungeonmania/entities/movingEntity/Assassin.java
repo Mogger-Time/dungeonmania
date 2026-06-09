@@ -5,8 +5,9 @@ import dungeonmania.entities.movingEntity.movementStrategy.FollowStrategy;
 import dungeonmania.entities.movingEntity.movementStrategy.MovementStrategy;
 import dungeonmania.entities.movingEntity.movementStrategy.RandomStrategy;
 import dungeonmania.game.Game;
-import dungeonmania.game.GameLauncher;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.util.Position;
+import dungeonmania.util.RandomProvider;
 
 public class Assassin extends Mercenary {
 
@@ -23,17 +24,17 @@ public class Assassin extends Mercenary {
     @Override
     public void setupEntity(EntitiesDto entitiesDto, Position position) {
         super.setPosition(position);
-        super.setHealth(GameLauncher.getConfig().getAssassinHealth());
-        super.setDamage(GameLauncher.getConfig().getAssassinAttack());
-        this.reconRadius = GameLauncher.getConfig().getAssassinReconRadius();
-        super.setBribeAmount(GameLauncher.getConfig().getAssassinBribeAmount());
-        super.setBribeRadius(GameLauncher.getConfig().getBribeRadius());
-        this.bribefailrate = GameLauncher.getConfig().getAssassinBribeFailRate();
+        super.setHealth(GameRuntimeContext.getConfig().getAssassinHealth());
+        super.setDamage(GameRuntimeContext.getConfig().getAssassinAttack());
+        this.reconRadius = GameRuntimeContext.getConfig().getAssassinReconRadius();
+        super.setBribeAmount(GameRuntimeContext.getConfig().getAssassinBribeAmount());
+        super.setBribeRadius(GameRuntimeContext.getConfig().getBribeRadius());
+        this.bribefailrate = GameRuntimeContext.getConfig().getAssassinBribeFailRate();
     }
 
     @Override
     public boolean bribe() {
-        if (Math.random() < bribefailrate) {
+        if (RandomProvider.nextDouble() < bribefailrate) {
             return false;
         } else {
             return super.bribe();

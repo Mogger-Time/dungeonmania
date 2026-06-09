@@ -2,6 +2,9 @@ package dungeonmania.game;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import dungeonmania.dtos.ConfigDto;
 import dungeonmania.dtos.DungeonsDto;
 import dungeonmania.dtos.GoalConditionDto;
@@ -21,6 +24,18 @@ public class GameLauncher {
 
     private static final List<String> savedGames = new ArrayList<>();
     private static final ObjectMapper objectMapper = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+    private static final ObjectMapper saveGameMapper = new ObjectMapper()
+            .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .activateDefaultTyping(
+                    BasicPolymorphicTypeValidator.builder()
+                            .allowIfSubType("dungeonmania")
+                            .allowIfSubType("java.util")
+                            .allowIfSubType("java.lang")
+                            .build(),
+                    ObjectMapper.DefaultTyping.NON_FINAL
+            );
+    private static final int SAVE_VERSION = 1;
     @Getter
     private static Game activeGame;
     @Getter
@@ -34,12 +49,14 @@ public class GameLauncher {
         DungeonsDto dungeon = loadDungeon(dungeonName);
         // Load the config file
         config = loadConfig(configName);
+        GameRuntimeContext.setConfig(config);
         // Load the entities
         entities = loadEntities(dungeon);
         // Load the goals
         Goal goal = loadGoals(dungeon.getGoalCondition());
         // Create the game
         activeGame = new Game(dungeonName, configName, entities, goal);
+        GameRuntimeContext.setActiveGame(activeGame);
 
         return activeGame;
     }
@@ -73,7 +90,11 @@ public class GameLauncher {
         File file = new File(gamesFolder + gameName + ".json");
 
         try {
-            objectMapper.writeValue(file, activeGame);
+            JsonNode gameNode = saveGameMapper.valueToTree(activeGame);
+            com.fasterxml.jackson.databind.node.ObjectNode root = objectMapper.createObjectNode();
+            root.put("version", SAVE_VERSION);
+            root.set("game", gameNode);
+            objectMapper.writeValue(file, root);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -83,7 +104,17 @@ public class GameLauncher {
         File file = new File("games/" + gameName + ".json");
 
         try {
-            return objectMapper.readValue(file, Game.class);
+            JsonNode root = objectMapper.readTree(file);
+            if (root.has("version") && root.has("game")) {
+                activeGame = saveGameMapper.treeToValue(root.get("game"), Game.class);
+            } else {
+                // Backward compatibility for saves written before versioned envelopes.
+                activeGame = saveGameMapper.treeToValue(root, Game.class);
+            }
+            config = loadConfig(activeGame.getConfigName());
+            GameRuntimeContext.setConfig(config);
+            GameRuntimeContext.setActiveGame(activeGame);
+            return activeGame;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -94,6 +125,7 @@ public class GameLauncher {
         File file = new File("games/");
         File[] files = file.listFiles();
         assert files != null;
+        savedGames.clear();
         for (File f : files) {
             savedGames.add(f.getName());
         }

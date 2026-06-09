@@ -3,7 +3,7 @@ package dungeonmania.entities.items;
 import dungeonmania.dtos.EntitiesDto;
 import dungeonmania.entities.movingEntity.playerStrategy.InvincibleStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.PlayerStrategy;
-import dungeonmania.game.GameLauncher;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.util.Position;
 
 public class InvincibilityPotion extends Potion {
@@ -20,6 +20,6 @@ public class InvincibilityPotion extends Potion {
     @Override
     public void setupEntity(EntitiesDto entitiesDto, Position position) {
         super.setPosition(position);
-        setDuration(GameLauncher.getConfig().getInvincibilityPotionDuration());
+        setDuration(GameRuntimeContext.getConfig().getInvincibilityPotionDuration());
     }
 }

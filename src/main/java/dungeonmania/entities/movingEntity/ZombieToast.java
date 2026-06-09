@@ -7,7 +7,7 @@ import dungeonmania.entities.movingEntity.playerStrategy.InvincibleStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.InvisibleStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.NormalStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.PlayerStrategy;
-import dungeonmania.game.GameLauncher;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.util.Position;
 import lombok.Getter;
 
@@ -25,9 +25,9 @@ public class ZombieToast extends Enemy {
     @Override
     public void setupEntity(EntitiesDto entitiesDto, Position position) {
         super.setPosition(position);
-        super.setHealth(GameLauncher.getConfig().getZombieHealth());
-        super.setDamage(GameLauncher.getConfig().getZombieAttack());
-        this.spawnRate = GameLauncher.getConfig().getZombieSpawnRate();
+        super.setHealth(GameRuntimeContext.getConfig().getZombieHealth());
+        super.setDamage(GameRuntimeContext.getConfig().getZombieAttack());
+        this.spawnRate = GameRuntimeContext.getConfig().getZombieSpawnRate();
     }
 
     public void alert(PlayerStrategy strat) {

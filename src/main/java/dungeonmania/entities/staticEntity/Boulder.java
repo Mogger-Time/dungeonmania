@@ -4,7 +4,7 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.movingEntity.MovingEntity;
 import dungeonmania.entities.movingEntity.Player;
 import dungeonmania.game.Game;
-import dungeonmania.game.GameLauncher;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -28,7 +28,7 @@ public class Boulder extends StaticEntity {
 
         Position newPos = boulderPos.translateBy(direction);
 
-        Game game = GameLauncher.getActiveGame();
+        Game game = GameRuntimeContext.getActiveGame();
         List<Entity> entitiesPos = game.getEntitiesinPos(newPos);
         boolean blocked = false;
         for (Entity entity : entitiesPos) {

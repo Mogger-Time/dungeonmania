@@ -1,17 +1,35 @@
 package dungeonmania.goals;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import dungeonmania.dtos.GoalConditionDto;
 import dungeonmania.game.Game;
 
 import java.util.List;
 
+@JsonTypeName("and")
 public class AndGoal implements Goal {
-    private final Goal x;
-    private final Goal y;
+    private Goal x;
+    private Goal y;
 
     public AndGoal(List<GoalConditionDto> subgoals) {
         x = GoalFactory.createGoal(subgoals.getFirst());
         y = GoalFactory.createGoal(subgoals.getLast());
+    }
+
+    @JsonCreator
+    public AndGoal(@JsonProperty("x") Goal x, @JsonProperty("y") Goal y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public Goal getX() {
+        return x;
+    }
+
+    public Goal getY() {
+        return y;
     }
 
     public boolean checkGoal(Game game) {
