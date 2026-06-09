@@ -1,49 +1,49 @@
 {
-    "entities": [
-        {
-            "type": "exit",
-            "x": 1,
-            "y": 3
-        },
-        {
-            "type": "player",
-            "x": 1,
-            "y": 1
-        },
-        {
-            "type": "portal",
-            "x": 3,
-            "y": 1,
-            "colour": "blue"
-        },
-        {
-            "type": "portal",
-            "x": 5,
-            "y": 4,
-            "colour": "blue"
-        },
-        {
-            "type": "wall",
-            "x": 5,
-            "y": 3
-        },
-        {
-            "type": "wall",
-            "x": 6,
-            "y": 4
-        },
-        {
-            "type": "wall",
-            "x": 5,
-            "y": 5
-        },
-        {
-            "type": "wall",
-            "x": 4,
-            "y": 4
-        }
-    ],
-    "goal-condition": {
-        "goal": "exit"
+  "entities": [
+    {
+      "type": "exit",
+      "x": 1,
+      "y": 3
+    },
+    {
+      "type": "player",
+      "x": 1,
+      "y": 1
+    },
+    {
+      "type": "portal",
+      "x": 3,
+      "y": 1,
+      "colour": "blue"
+    },
+    {
+      "type": "portal",
+      "x": 5,
+      "y": 4,
+      "colour": "blue"
+    },
+    {
+      "type": "wall",
+      "x": 5,
+      "y": 3
+    },
+    {
+      "type": "wall",
+      "x": 6,
+      "y": 4
+    },
+    {
+      "type": "wall",
+      "x": 5,
+      "y": 5
+    },
+    {
+      "type": "wall",
+      "x": 4,
+      "y": 4
     }
+  ],
+  "goal-condition": {
+    "goal": "exit"
+  }
 }

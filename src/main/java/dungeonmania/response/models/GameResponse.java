@@ -6,22 +6,22 @@ public final class GameResponse {
     private final String dungeonId;
     private final String name;
     private final LocalDateTime lastSaved;
-    
+
     public GameResponse(String dungeonId, String name, LocalDateTime lastSaved) {
         this.dungeonId = dungeonId;
         this.name = name;
         this.lastSaved = lastSaved;
     }
 
-    public final LocalDateTime getLastSaved() {
+    public LocalDateTime getLastSaved() {
         return lastSaved;
     }
 
-    public final String getGameId() {
+    public String getGameId() {
         return name;
     }
 
-    public final String getDungeonId() {
+    public String getDungeonId() {
         return dungeonId;
     }
 }

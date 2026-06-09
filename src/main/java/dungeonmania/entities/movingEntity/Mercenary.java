@@ -1,7 +1,7 @@
 package dungeonmania.entities.movingEntity;
 
-import org.json.JSONObject;
-
+import dungeonmania.dtos.EntitiesDto;
+import dungeonmania.entities.InteractableEntity;
 import dungeonmania.entities.movingEntity.mercStrategy.BribedStrat;
 import dungeonmania.entities.movingEntity.mercStrategy.EnemyStrat;
 import dungeonmania.entities.movingEntity.mercStrategy.MercStrat;
@@ -9,9 +9,14 @@ import dungeonmania.entities.movingEntity.movementStrategy.FollowStrategy;
 import dungeonmania.entities.movingEntity.movementStrategy.MovementStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.PlayerStrategy;
 import dungeonmania.game.Game;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.util.Position;
+import lombok.Getter;
+import lombok.Setter;
 
-public class Mercenary extends Enemy {
+@Getter
+@Setter
+public class Mercenary extends Enemy implements InteractableEntity {
 
     private int bribeRadius;
     private int bribeAmount;
@@ -25,28 +30,12 @@ public class Mercenary extends Enemy {
     }
 
     @Override
-    public void setupEntity(JSONObject entityConfig, Position position) {
+    public void setupEntity(EntitiesDto entitiesDto, Position position) {
         super.setPosition(position);
-        super.setHealth(entityConfig.getDouble("mercenary_health"));
-        super.setDamage(entityConfig.getDouble("mercenary_attack"));
-        this.bribeRadius = entityConfig.getInt("bribe_radius");
-        this.bribeAmount = entityConfig.getInt("bribe_amount");
-    }
-
-    public int getBribeRadius() {
-        return bribeRadius;
-    }
-
-    public int getBribeAmount() {
-        return bribeAmount;
-    }
-
-    public void setBribeRadius(int briberadius) {
-        bribeRadius = briberadius;
-    }
-
-    public void setBribeAmount(int bribeamount) {
-        bribeAmount = bribeamount;
+        super.setHealth(GameRuntimeContext.getConfig().getMercenaryHealth());
+        super.setDamage(GameRuntimeContext.getConfig().getMercenaryAttack());
+        this.bribeRadius = GameRuntimeContext.getConfig().getBribeRadius();
+        this.bribeAmount = GameRuntimeContext.getConfig().getBribeAmount();
     }
 
     public void alert(PlayerStrategy strat) {
@@ -83,12 +72,13 @@ public class Mercenary extends Enemy {
         return allystatus.isAlly();
     }
 
-    public void setAllystatus(MercStrat strat) {
-        allystatus = strat;
-    }
-
     public boolean bribe() {
         allystatus = new BribedStrat(1);
         return true;
+    }
+
+    @Override
+    public void interact(Game game, Player player) throws dungeonmania.exceptions.InvalidActionException {
+        player.bribe(this);
     }
 }

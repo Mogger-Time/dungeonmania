@@ -1,19 +1,20 @@
 {
-    "entities": [
-        {
-            "type": "player",
-            "x": 1,
-            "y": 1
-        }
-    ],
-    "goal-condition": {
-        "goal": "AND",
-        "subgoals": [
-            {
-                "goal": "enemies"
-            }, {
-                "goal": "treasure"
-            }
-        ]
+  "entities": [
+    {
+      "type": "player",
+      "x": 1,
+      "y": 1
     }
+  ],
+  "goal-condition": {
+    "goal": "AND",
+    "subgoals": [
+      {
+        "goal": "enemies"
+      },
+      {
+        "goal": "treasure"
+      }
+    ]
+  }
 }

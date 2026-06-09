@@ -1,22 +1,27 @@
 {
-    "entities": [
-        {
-            "type" : "spider",
-            "x" : 1,
-            "y" : 1
-        }, {
-            "type" : "invisibility_potion",
-            "x" : 2,
-            "y" : 0
-        }, {
-            "type": "exit",
-            "x": 8,
-            "y": 8
-        }, {
-            "type": "player",
-            "x": 3,
-            "y": 0
-        }
-    ],
-    "goal-condition": {"goal": "exit"}
+  "entities": [
+    {
+      "type": "spider",
+      "x": 1,
+      "y": 1
+    },
+    {
+      "type": "invisibility_potion",
+      "x": 2,
+      "y": 0
+    },
+    {
+      "type": "exit",
+      "x": 8,
+      "y": 8
+    },
+    {
+      "type": "player",
+      "x": 3,
+      "y": 0
+    }
+  ],
+  "goal-condition": {
+    "goal": "exit"
+  }
 }

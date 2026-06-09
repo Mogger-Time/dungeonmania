@@ -9,11 +9,11 @@ public final class ItemResponse {
         this.type = type;
     }
 
-    public final String getType() {
+    public String getType() {
         return type;
     }
 
-    public final String getId() {
+    public String getId() {
         return id;
     }
 }

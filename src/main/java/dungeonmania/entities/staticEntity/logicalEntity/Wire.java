@@ -1,20 +1,28 @@
 package dungeonmania.entities.staticEntity.logicalEntity;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.staticEntity.Boulder;
 import dungeonmania.entities.staticEntity.FloorSwitch;
-import dungeonmania.game.Game; 
-import dungeonmania.game.GameLauncher;
+import dungeonmania.game.Game;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.util.Position;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Wire extends LogicalEntity {
 
     private boolean isActivated;
     private boolean isVisited = false;
+
+    public Wire() {
+        super();
+        setName("wire");
+        super.setInteractable(false);
+    }
 
     public boolean isActivated() {
         return isActivated;
@@ -24,55 +32,47 @@ public class Wire extends LogicalEntity {
         return isVisited;
     }
 
-    public Wire() {
-        super();
-        setName("wire");
-        super.setInteractable(false);
+    public void checkActivated() {
+        Game activeGame = GameRuntimeContext.getActiveGame();
+        this.isVisited = false;
+        this.isActivated = isPoweredFrom(activeGame, this.getPosition(), new HashSet<>());
     }
 
-    public void checkActivated() {
-        Position wirepos = this.getPosition();
-        List<Position> adjacentWire = new ArrayList<>();
-        int x = wirepos.getX();
-        int y = wirepos.getY();
-        adjacentWire.add(new Position(x-1, y));
-        adjacentWire.add(new Position(x+1, y));
-        adjacentWire.add(new Position(x, y-1));
-        adjacentWire.add(new Position(x, y+1));
-
-        Position boulderpos = null;
-        Position switchpos = null;  
-        
-        Game activeGame = GameLauncher.getActiveGame();
-        this.isActivated = false;
-        for (Position pos : adjacentWire) {
-            List<Entity> entsInPos = activeGame.getEntitiesinPos(pos);
-            for (Entity entity : entsInPos) {
-                if (entity instanceof Wire && this.isVisited == false) {
-                    //If connected to another wire
-                    this.isActivated = true;
-                    this.isVisited = true;
-                    ((Wire) entity).checkActivated();
-                    if (((Wire) entity).isActivated == true) {
-                        return;
-                    } 
-                }
-            
-                if (entity instanceof Boulder) {
-                    boulderpos =  pos;
-                }
-                if (entity instanceof FloorSwitch) {
-                    switchpos = pos;
-                }
-                //If wire is connected to an activated floor switch
-                if (boulderpos == switchpos && boulderpos != null) {
-                    this.isActivated = true;
-                }
-
+    private boolean isPoweredFrom(Game game, Position current, Set<Position> visited) {
+        if (!visited.add(current)) {
+            return false;
         }
 
+        for (Position pos : getAdjacent(current)) {
+            List<Entity> entities = game.getEntitiesinPos(pos);
+            boolean hasBoulder = false;
+            boolean hasSwitch = false;
+            for (Entity entity : entities) {
+                if (entity instanceof Boulder) {
+                    hasBoulder = true;
+                } else if (entity instanceof FloorSwitch) {
+                    hasSwitch = true;
+                } else if (entity instanceof Wire && isPoweredFrom(game, entity.getPosition(), visited)) {
+                    return true;
+                }
+            }
+            if (hasBoulder && hasSwitch) {
+                return true;
+            }
+        }
+        return false;
     }
-}
-    
- 
+
+    private List<Position> getAdjacent(Position pos) {
+        int x = pos.getX();
+        int y = pos.getY();
+        List<Position> adjacent = new ArrayList<>();
+        adjacent.add(new Position(x - 1, y));
+        adjacent.add(new Position(x + 1, y));
+        adjacent.add(new Position(x, y - 1));
+        adjacent.add(new Position(x, y + 1));
+        return adjacent;
+    }
+
+
 }

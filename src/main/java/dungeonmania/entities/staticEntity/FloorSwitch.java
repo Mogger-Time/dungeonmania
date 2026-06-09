@@ -4,8 +4,6 @@ import dungeonmania.util.Position;
 
 public class FloorSwitch extends StaticEntity {
 
-    private boolean isTriggered;
-
     public FloorSwitch() {
         super();
         setName("switch");
@@ -17,8 +15,8 @@ public class FloorSwitch extends StaticEntity {
         Position floorSwPos = this.getPosition();
 
         if (boulderPos == floorSwPos) {
-            this.isTriggered = true;
+            boolean isTriggered = true;
         }
     }
-    
+
 }

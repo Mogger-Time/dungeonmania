@@ -1,9 +1,23 @@
 #!/bin/bash
 
-cd build/reports/jacoco/test/html/
+set -euo pipefail
 
-row=`cat index.html | grep -o '<td>Total<\/td>.*<td class="ctr2">[0-9][0-9]%<\/td>'`
+report_file="build/reports/jacoco/test/jacocoTestReport.xml"
 
-percent=`echo $row | grep -o -m2 '[0-9][0-9]%' | tail -n1`
+if [ ! -f "$report_file" ]; then
+  echo "0%"
+  exit 0
+fi
 
-echo $percent
+line_node=$(awk -F'"' '/counter type="LINE"/ { print; exit }' "$report_file")
+missed=$(echo "$line_node" | awk -F'"' '{print $4}')
+covered=$(echo "$line_node" | awk -F'"' '{print $6}')
+total=$((missed + covered))
+
+if [ "$total" -eq 0 ]; then
+  echo "0%"
+  exit 0
+fi
+
+percent=$((covered * 100 / total))
+echo "${percent}%"

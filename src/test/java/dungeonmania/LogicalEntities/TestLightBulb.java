@@ -1,22 +1,15 @@
 package dungeonmania.LogicalEntities;
 
-import static dungeonmania.TestUtils.countEntityOfType;
-import static dungeonmania.TestUtils.getEntities;
-import static dungeonmania.TestUtils.getGoals;
-import static dungeonmania.TestUtils.getPlayer;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static dungeonmania.TestUtils.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class TestLightBulb {
@@ -32,9 +25,9 @@ public class TestLightBulb {
 
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(2, 1), false);
-        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3,1), false);
-        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3,1), false);
-        
+        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3, 1), false);
+        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3, 1), false);
+
 
         // move player right pushing the boulder onto the switch and activating adjacent lightbulb
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
@@ -48,7 +41,7 @@ public class TestLightBulb {
         assertEquals(expectedBoulder, actualBoulder);
         assertEquals(expectedFloorSwitch, actualFloorSwitch);
 
-    
+
         assertEquals(actualLightBulb, expectedLightBulb);
 
     }
@@ -65,9 +58,9 @@ public class TestLightBulb {
 
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(2, 1), false);
-        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3,1), false);
-        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3,1), false);
-        
+        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3, 1), false);
+        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3, 1), false);
+
 
         // move player right pushing the boulder onto the switch and activating wired Lightbulb
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
@@ -98,9 +91,9 @@ public class TestLightBulb {
 
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(2, 1), false);
-        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3,1), false);
-        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3,1), false);
-        
+        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3, 1), false);
+        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3, 1), false);
+
 
         // move player right pushing the boulder onto the switch and activating wired Lightbulb
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
@@ -124,7 +117,7 @@ public class TestLightBulb {
 
         int offCount = countEntityOfType(actualDungonRes, "light_bulb_off");
         onCount = countEntityOfType(actualDungonRes, "light_bulb_on");
-        
+
         assertEquals(onCount, 0);
         assertEquals(offCount, 2);
     }
@@ -140,16 +133,16 @@ public class TestLightBulb {
 
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(2, 1), false);
-        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3,1), false);
-        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3,1), false);
-        
+        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3, 1), false);
+        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3, 1), false);
+
 
         // move player right pushing the boulder onto the switch and activating wired Lightbulb
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
         EntityResponse actualPlayer = getPlayer(actualDungonRes).get();
         EntityResponse actualBoulder = getEntities(actualDungonRes, "boulder").get(0);
         EntityResponse actualFloorSwitch = getEntities(actualDungonRes, "switch").get(0);
-       
+
         // assert after movement, boulder is on switch and the light bulb is activated
         assertEquals(expectedPlayer, actualPlayer);
         assertEquals(expectedBoulder, actualBoulder);
@@ -159,7 +152,7 @@ public class TestLightBulb {
         int offCount = countEntityOfType(actualDungonRes, "light_bulb_off");
         assertEquals(offCount, 1);
         assertEquals(onCount, 1);
- 
+
     }
 
     @Test
@@ -174,9 +167,9 @@ public class TestLightBulb {
 
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(2, 1), false);
-        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3,1), false);
-        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3,1), false);
-        
+        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3, 1), false);
+        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3, 1), false);
+
 
         // move player right pushing the boulder onto the switch and activating wired Lightbulb
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
@@ -184,7 +177,7 @@ public class TestLightBulb {
         EntityResponse actualBoulder = getEntities(actualDungonRes, "boulder").get(0);
         EntityResponse actualFloorSwitch = getEntities(actualDungonRes, "switch").get(0);
 
-       
+
         // assert after movement, boulder is on switch and the light bulb is activated
         assertEquals(expectedPlayer, actualPlayer);
         assertEquals(expectedBoulder, actualBoulder);
@@ -195,6 +188,7 @@ public class TestLightBulb {
         assertEquals(offCount, 1);
         assertEquals(onCount, 1);
     }
+
     @Test
     @DisplayName("Test the player can move a boulder onto a switch activating co_and lightbulb")
     public void testBoulderOnCOANDLightbulb() {
@@ -203,13 +197,13 @@ public class TestLightBulb {
         EntityResponse initPlayer = getPlayer(initDungonRes).get();
         EntityResponse initBoulder = getEntities((initDungonRes), "boulder").get(0);
         EntityResponse initFloorSwitch = getEntities((initDungonRes), "switch").get(0);
-        
+
 
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(2, 1), false);
-        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3,1), false);
-        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3,1), false);
-        
+        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3, 1), false);
+        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3, 1), false);
+
 
         // move player right pushing the boulder onto the switch and activating wired Lightbulb
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
@@ -217,7 +211,7 @@ public class TestLightBulb {
         EntityResponse actualBoulder = getEntities(actualDungonRes, "boulder").get(0);
         EntityResponse actualFloorSwitch = getEntities(actualDungonRes, "switch").get(0);
 
-       
+
         // assert after movement, boulder is on switch and the light bulb is activated
         assertEquals(expectedPlayer, actualPlayer);
         assertEquals(expectedBoulder, actualBoulder);

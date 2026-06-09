@@ -1,5 +1,7 @@
 package dungeonmania.response.models;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,16 +13,17 @@ public final class DungeonResponse {
     private final List<BattleResponse> battles;
     private final List<String> buildables;
     private final String goals;
+    @Getter
     private final List<AnimationQueue> animations;
 
     public DungeonResponse(String dungeonId, String dungeonName, List<EntityResponse> entities,
-            List<ItemResponse> inventory, List<BattleResponse> battles, List<String> buildables, String goals) {
+                           List<ItemResponse> inventory, List<BattleResponse> battles, List<String> buildables, String goals) {
         this(dungeonId, dungeonName, entities, inventory, battles, buildables, goals, new ArrayList<>());
     }
 
     public DungeonResponse(String dungeonId, String dungeonName, List<EntityResponse> entities,
-            List<ItemResponse> inventory, List<BattleResponse> battles, List<String> buildables, String goals,
-            List<AnimationQueue> animations) {
+                           List<ItemResponse> inventory, List<BattleResponse> battles, List<String> buildables, String goals,
+                           List<AnimationQueue> animations) {
         this.dungeonId = dungeonId;
         this.dungeonName = dungeonName;
         this.entities = entities;
@@ -31,35 +34,31 @@ public final class DungeonResponse {
         this.animations = animations;
     }
 
-    public List<AnimationQueue> getAnimations() {
-        return animations;
-    }
-
-    public final String getDungeonName() {
+    public String getDungeonName() {
         return dungeonName;
     }
 
-    public final List<ItemResponse> getInventory() {
+    public List<ItemResponse> getInventory() {
         return inventory;
     }
 
-    public final List<BattleResponse> getBattles(){
+    public List<BattleResponse> getBattles() {
         return battles;
     }
 
-    public final List<String> getBuildables() {
+    public List<String> getBuildables() {
         return buildables;
     }
 
-    public final String getGoals() {
+    public String getGoals() {
         return goals;
     }
 
-    public final String getDungeonId() {
+    public String getDungeonId() {
         return dungeonId;
     }
 
-    public final List<EntityResponse> getEntities() {
+    public List<EntityResponse> getEntities() {
         return entities;
     }
 }

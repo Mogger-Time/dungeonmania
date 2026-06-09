@@ -1,16 +1,14 @@
 package dungeonmania.StaticEntities;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import static dungeonmania.TestUtils.getGoals;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.util.Direction;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static dungeonmania.TestUtils.getGoals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestExit {
     @Test
@@ -25,9 +23,9 @@ public class TestExit {
         // move player downward
         initDungonRes = dmc.tick(Direction.DOWN);
         initDungonRes = dmc.tick(Direction.DOWN);
-     
+
         // assert after movement reached exit
-        assertFalse(getGoals(initDungonRes).contains(":exit"));;
+        assertFalse(getGoals(initDungonRes).contains(":exit"));
     }
-    
+
 }

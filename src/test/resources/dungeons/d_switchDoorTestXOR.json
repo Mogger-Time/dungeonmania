@@ -1,47 +1,50 @@
 {
-    "entities": [
-        {
-            "type" : "player",
-            "x" : 1,
-            "y" : 1
-        }, 
-        {
-            "type" : "key",
-            "x" : 0,
-            "y" : 1,
-            "key" : 1
-        },
-        {
-            "type" : "boulder",
-            "x" : 2,
-            "y" : 1
-        },{
-            "type" : "switch",
-            "x" : 3,
-            "y" : 1
-        },
-        {
-            "type" : "wire",
-            "x" : 3,
-            "y" : 0
-        },
-        {
-            "type" : "wire",
-            "x" : 4,
-            "y" : 0
-        },
-        {
-            "type" : "switch_door",
-            "x" : 4,
-            "y" : 1,
-            "key" : 1,
-            "logic" : "xor"
-        },
-        {
-            "type": "exit",
-            "x": 6,
-            "y": 6
-        }
-    ],
-    "goal-condition": {"goal": "exit"}
+  "entities": [
+    {
+      "type": "player",
+      "x": 1,
+      "y": 1
+    },
+    {
+      "type": "key",
+      "x": 0,
+      "y": 1,
+      "key": 1
+    },
+    {
+      "type": "boulder",
+      "x": 2,
+      "y": 1
+    },
+    {
+      "type": "switch",
+      "x": 3,
+      "y": 1
+    },
+    {
+      "type": "wire",
+      "x": 3,
+      "y": 0
+    },
+    {
+      "type": "wire",
+      "x": 4,
+      "y": 0
+    },
+    {
+      "type": "switch_door",
+      "x": 4,
+      "y": 1,
+      "key": 1,
+      "logic": "xor"
+    },
+    {
+      "type": "exit",
+      "x": 6,
+      "y": 6
+    }
+  ],
+  "goal-condition": {
+    "goal": "exit"
+  }
 }

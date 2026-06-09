@@ -1,14 +1,14 @@
 package dungeonmania.entities.staticEntity;
 
-import java.util.List;
-
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.movingEntity.MovingEntity;
 import dungeonmania.entities.movingEntity.Player;
 import dungeonmania.game.Game;
-import dungeonmania.game.GameLauncher;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+
+import java.util.List;
 
 public class Boulder extends StaticEntity {
     public Boulder() {
@@ -17,7 +17,7 @@ public class Boulder extends StaticEntity {
         super.setInteractable(false);
         super.setCollision(true);
     }
-    
+
     @Override
     public void premove(Player player, Direction direction) {
         pushBoulder(direction);
@@ -28,7 +28,7 @@ public class Boulder extends StaticEntity {
 
         Position newPos = boulderPos.translateBy(direction);
 
-        Game game = GameLauncher.getActiveGame();
+        Game game = GameRuntimeContext.getActiveGame();
         List<Entity> entitiesPos = game.getEntitiesinPos(newPos);
         boolean blocked = false;
         for (Entity entity : entitiesPos) {
@@ -37,7 +37,7 @@ public class Boulder extends StaticEntity {
                 break;
             }
         }
-        if (blocked == false) {
+        if (!blocked) {
             setPosition(newPos);
         }
     }

@@ -1,15 +1,35 @@
 package dungeonmania.goals;
 
-import org.json.JSONArray;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import dungeonmania.dtos.GoalConditionDto;
 import dungeonmania.game.Game;
 
+import java.util.List;
+
+@JsonTypeName("and")
 public class AndGoal implements Goal {
     private Goal x;
     private Goal y;
 
-    public AndGoal(JSONArray subgoals) {
-        x = GoalFactory.createGoal(subgoals.getJSONObject(0));
-        y = GoalFactory.createGoal(subgoals.getJSONObject(1));
+    public AndGoal(List<GoalConditionDto> subgoals) {
+        x = GoalFactory.createGoal(subgoals.getFirst());
+        y = GoalFactory.createGoal(subgoals.getLast());
+    }
+
+    @JsonCreator
+    public AndGoal(@JsonProperty("x") Goal x, @JsonProperty("y") Goal y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public Goal getX() {
+        return x;
+    }
+
+    public Goal getY() {
+        return y;
     }
 
     public boolean checkGoal(Game game) {
@@ -23,11 +43,11 @@ public class AndGoal implements Goal {
     public String printcurGoal(Game game) {
         String xstr = x.printcurGoal(game);
         String ystr = y.printcurGoal(game);
-        if (xstr.equals("") && ystr.equals("")) {
+        if (xstr.isEmpty() && ystr.isEmpty()) {
             return "";
-        } else if (xstr.equals("")) {
+        } else if (xstr.isEmpty()) {
             return ystr;
-        } else if (ystr.equals("")) {
+        } else if (ystr.isEmpty()) {
             return xstr;
         } else {
             return String.format("(%1$s AND %2$s)", xstr, ystr);

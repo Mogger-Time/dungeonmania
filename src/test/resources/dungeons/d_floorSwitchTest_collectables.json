@@ -1,37 +1,37 @@
 {
-    "entities": [
-        {
-            "type": "exit",
-            "x": 5,
-            "y": 5
-        },
-        {
-            "type": "arrow",
-            "x": 1,
-            "y": 3
-        },
-        {
-            "type": "wood",
-            "x": 3,
-            "y": 1
-        },
-        {
-            "type": "switch",
-            "x": 1,
-            "y": 3
-        },
-        {
-            "type": "switch",
-            "x": 3,
-            "y": 1
-        },
-        {
-            "type": "player",
-            "x": 1,
-            "y": 1
-        }
-    ],
-    "goal-condition": {
-        "goal": "exit"       
+  "entities": [
+    {
+      "type": "exit",
+      "x": 5,
+      "y": 5
+    },
+    {
+      "type": "arrow",
+      "x": 1,
+      "y": 3
+    },
+    {
+      "type": "wood",
+      "x": 3,
+      "y": 1
+    },
+    {
+      "type": "switch",
+      "x": 1,
+      "y": 3
+    },
+    {
+      "type": "switch",
+      "x": 3,
+      "y": 1
+    },
+    {
+      "type": "player",
+      "x": 1,
+      "y": 1
     }
+  ],
+  "goal-condition": {
+    "goal": "exit"
+  }
 }

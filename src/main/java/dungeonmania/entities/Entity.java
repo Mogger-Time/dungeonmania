@@ -1,21 +1,25 @@
 package dungeonmania.entities;
 
+import dungeonmania.dtos.EntitiesDto;
+import dungeonmania.entities.movingEntity.Player;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
-import dungeonmania.entities.movingEntity.Player;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
-import org.json.JSONObject;
-
+@Getter
+@Setter
 public abstract class Entity {
-    
-    private String      entityID;
-    private Position    position;
-    private Boolean     collision;
-    private Boolean     interactable;
+
+    private String entityID;
+    private Position position;
+    private Boolean collision;
+    private Boolean interactable;
     private String name;
 
     public Entity() {
@@ -25,53 +29,18 @@ public abstract class Entity {
         this.interactable = false;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public void setCollision(Boolean collision) {
-        this.collision = collision;
-    }
-
-    public void setInteractable(Boolean interactable) {
-        this.interactable = interactable;
-    }
-
-    public String getEntityID() {
-        return entityID;
-    }
-
-    public Boolean getCollision() {
-        return collision;
-    }
-
-    public Boolean getInteractable() {
-        return interactable;
-    }
-
     public Position getNewPosition(Direction direction) {
-        
         return this.position.translateBy(direction);
     }
 
-    public Position getPosition() {
-        return this.position;
-    }
-
+    @JsonIgnore
     public EntityResponse getEntityResponse() {
         return new EntityResponse(this.entityID, this.name, this.position, this.interactable);
     }
 
+    @JsonIgnore
     public ItemResponse getItemResponse() {
         return new ItemResponse(this.entityID, this.name);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     //effects of being on entity on the player
@@ -81,9 +50,10 @@ public abstract class Entity {
         return false;
     }
 
-    public void premove(Player player, Direction movement) {}
+    public void premove(Player player, Direction movement) {
+    }
 
-    public void setupEntity(JSONObject entityConfig, Position position) {
+    public void setupEntity(EntitiesDto entitiesDto, Position position) {
         setPosition(position);
     }
 }

@@ -1,21 +1,21 @@
 package dungeonmania.entities.movingEntity.movementStrategy;
 
-import java.util.List;
-import java.util.Map;
-
 import dungeonmania.entities.movingEntity.Enemy;
 import dungeonmania.game.Game;
 import dungeonmania.util.Direction;
 import dungeonmania.util.PosDirWrapper;
 import dungeonmania.util.Position;
 
+import java.util.List;
+import java.util.Map;
+
 public class FearStrategy extends MovementStrategy {
-    
+
     public FearStrategy() {
         super();
         super.setStrategyName("fear");
     }
-    
+
     @Override
     public Direction getNextPosition(Game game, Enemy enemy) {
         Position initial = game.getPlayerPosition();
@@ -43,8 +43,8 @@ public class FearStrategy extends MovementStrategy {
             return Direction.RIGHT;
         } else if (closer == Direction.RIGHT && directions.contains(Direction.LEFT)) {
             return Direction.LEFT;
-        //if no way to reach player or if no way to run away
-        } else if (directions.size() != 0) {
+            //if no way to reach player or if no way to run away
+        } else if (!directions.isEmpty()) {
             return directions.get(randomdir);
         }
         return null;

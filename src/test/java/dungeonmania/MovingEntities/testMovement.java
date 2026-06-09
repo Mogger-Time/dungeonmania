@@ -1,18 +1,16 @@
 package dungeonmania.MovingEntities;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-
-import static dungeonmania.TestUtils.getEntities;
-
-import java.util.List;
-
-import org.junit.jupiter.api.Test;
-
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static dungeonmania.TestUtils.getEntities;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class testMovement {
     @Test

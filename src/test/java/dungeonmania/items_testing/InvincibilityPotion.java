@@ -1,23 +1,17 @@
 package dungeonmania.items_testing;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static dungeonmania.TestUtils.getEntities;
-
-import java.util.List;
-
+import dungeonmania.DungeonManiaController;
+import dungeonmania.response.models.*;
+import dungeonmania.util.Direction;
+import dungeonmania.util.Position;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import dungeonmania.DungeonManiaController;
-import dungeonmania.response.models.BattleResponse;
-import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.response.models.EntityResponse;
-import dungeonmania.response.models.RoundResponse;
-import dungeonmania.response.models.ItemResponse;
-import dungeonmania.util.Direction;
-import dungeonmania.util.Position;
+import java.util.List;
+
+import static dungeonmania.TestUtils.getEntities;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class InvincibilityPotion {
     @Test

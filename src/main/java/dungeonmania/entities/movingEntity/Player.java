@@ -1,75 +1,55 @@
 package dungeonmania.entities.movingEntity;
 
-import dungeonmania.util.Position;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dungeonmania.Battle;
-import dungeonmania.entities.items.BattleItem;
-import dungeonmania.entities.items.Bomb;
-import dungeonmania.entities.items.Bow;
-import dungeonmania.entities.items.Item;
-import dungeonmania.entities.items.ItemFactory;
-import dungeonmania.entities.items.MidnightArmour;
-import dungeonmania.entities.items.Potion;
-import dungeonmania.entities.items.Sceptre;
-import dungeonmania.entities.items.Shield;
-import dungeonmania.entities.items.Treasure;
+import dungeonmania.dtos.EntitiesDto;
+import dungeonmania.entities.items.*;
 import dungeonmania.entities.movingEntity.mercStrategy.ControlledStrat;
 import dungeonmania.entities.movingEntity.playerStrategy.NormalStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.PlayerStrategy;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.game.Game;
-import dungeonmania.game.GameLauncher;
-
-import org.json.JSONObject;
-
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.ItemResponse;
+import dungeonmania.util.Position;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Getter
+@Setter
 public class Player extends MovingEntity {
-    
+
     private transient PlayerStrategy strategy;
-    private transient List<PlayerStrategy> queuedstrats = new ArrayList<PlayerStrategy>();
-    private transient List<Item> inventory = new ArrayList<Item>();
-    private transient List<Battle> battles = new ArrayList<Battle>();
-    private transient List<Mercenary> ally = new ArrayList<Mercenary>();
+    private transient List<PlayerStrategy> queuedstrats;
+    private transient List<Item> inventory;
+    private transient List<Battle> battles;
+    private transient List<Mercenary> ally = new ArrayList<>();
     private double allyattack;
     private double allydefence;
+    @JsonProperty("prev_pos")
     private Position prevpos;
+
     public Player() {
         super();
         this.strategy = new NormalStrategy();
-        this.queuedstrats = new ArrayList<PlayerStrategy>();
-        this.inventory = new ArrayList<Item>();
-        this.battles = new ArrayList<Battle>();
+        this.queuedstrats = new ArrayList<>();
+        this.inventory = new ArrayList<>();
+        this.battles = new ArrayList<>();
         setName("player");
     }
 
-    public void setAllyattack(double attack) {
-        allyattack = attack;
-    }
-
-    public double getAllyattack() {
-        return allyattack;
-    }
-
-    public void setAllydefence(double defence) {
-        allydefence = defence;
-    }
-
-    public double getAllydefence() {
-        return allydefence;
-    }
-
     @Override
-    public void setupEntity(JSONObject entityConfig, Position position) {
-        setDamage(entityConfig.getInt("player_attack"));
-        setHealth(entityConfig.getInt("player_health"));
-        setAllyattack(entityConfig.getInt("ally_attack"));
-        setAllydefence(entityConfig.getInt("ally_defence"));
+    public void setupEntity(EntitiesDto entitiesDto, Position position) {
+        setDamage(GameRuntimeContext.getConfig().getPlayerAttack());
+        setHealth(GameRuntimeContext.getConfig().getPlayerHealth());
+        setAllyattack(GameRuntimeContext.getConfig().getAllyAttack());
+        setAllydefence(GameRuntimeContext.getConfig().getAllyDefence());
         setInteractable(false);
         setPosition(position);
     }
@@ -78,43 +58,29 @@ public class Player extends MovingEntity {
         inventory.add(item);
     }
 
-    public List<Mercenary> getAlly() {
-        return ally;
-    }
-
     public void removeItem(Item item) {
         inventory.remove(item);
     }
 
-    public List<Item> getInventory() {
-        return inventory;
-    }
-
-    public PlayerStrategy getStrategy() {
-        return strategy;
-    }
-
-    public void setStrategy(PlayerStrategy strategy) {
-        this.strategy = strategy;
-    }
-
+    @JsonIgnore
     public List<ItemResponse> getInvResponse() {
-        List<ItemResponse> responses = new ArrayList<ItemResponse>();
+        List<ItemResponse> responses = new ArrayList<>();
         for (Item item : inventory) {
             responses.add(item.getItemResponse());
         }
         return responses;
     }
 
+    @JsonIgnore
     public List<BattleItem> getBattleItems() {
         return strategy.getBattleItems(inventory);
     }
 
     public void updateStrat(Game game) {
-        ally = ally.stream().filter(s->s.isAlly()).collect(Collectors.toList());
+        ally = ally.stream().filter(Mercenary::isAlly).collect(Collectors.toList());
         strategy.wearout();
         if (strategy.getDuration() == 0) {
-            if (queuedstrats.size() == 0) {
+            if (queuedstrats.isEmpty()) {
                 strategy = new NormalStrategy();
             } else {
                 strategy = queuedstrats.get(0);
@@ -133,12 +99,9 @@ public class Player extends MovingEntity {
         }
     }
 
-    public List<Battle> getBattles() {
-        return battles;
-    }
-
+    @JsonIgnore
     public List<BattleResponse> getBattleResponses() {
-        List<BattleResponse> battleResponses = new ArrayList<BattleResponse>();
+        List<BattleResponse> battleResponses = new ArrayList<>();
         for (Battle battle : battles) {
             battleResponses.add(battle.getResponse());
         }
@@ -148,7 +111,7 @@ public class Player extends MovingEntity {
     public void addStrat(PlayerStrategy newstate) {
         if (strategy instanceof NormalStrategy) {
             strategy = newstate;
-            Game activegame = GameLauncher.getActiveGame();
+            Game activegame = GameRuntimeContext.getActiveGame();
             for (Enemy enemy : activegame.getEnemies()) {
                 enemy.alert(strategy);
             }
@@ -183,8 +146,9 @@ public class Player extends MovingEntity {
         }
     }
 
+    @JsonIgnore
     public List<String> getBuildables() {
-        List<String> buildables = new ArrayList<String>();
+        List<String> buildables = new ArrayList<>();
         if (Bow.checkBuildable(inventory)) {
             buildables.add("bow");
         }
@@ -212,8 +176,8 @@ public class Player extends MovingEntity {
     public void bribe(Mercenary merc) throws InvalidActionException {
         Position playerpos = this.getPosition();
         Position mercpos = merc.getPosition();
-        List<Item> sceptres = inventory.stream().filter(s->(s instanceof Sceptre)).collect(Collectors.toList());
-        if (sceptres.size() > 0) {
+        List<Item> sceptres = inventory.stream().filter(s -> (s instanceof Sceptre)).collect(Collectors.toList());
+        if (!sceptres.isEmpty()) {
             Sceptre sceptre = (Sceptre) sceptres.get(0);
             int duration = sceptre.getMindControlDuration() - 1;
             ally.add(merc);
@@ -221,11 +185,11 @@ public class Player extends MovingEntity {
             merc.setInteractable(false);
             return;
         }
-        
+
         if (Math.abs(playerpos.getX() - mercpos.getX()) > merc.getBribeRadius() || Math.abs(playerpos.getY() - mercpos.getY()) > merc.getBribeRadius()) {
             throw new InvalidActionException("Mercenary out of range");
         }
-        List<Item> treasures = inventory.stream().filter(s->(s instanceof Treasure)).collect(Collectors.toList());
+        List<Item> treasures = inventory.stream().filter(s -> (s instanceof Treasure)).collect(Collectors.toList());
         if (treasures.size() < merc.getBribeAmount()) {
             throw new InvalidActionException("Not enough treasure");
         }
@@ -235,10 +199,6 @@ public class Player extends MovingEntity {
         }
     }
 
-	public void setInventory(List<Item> items) {
-        inventory = items;
-	}
-
     public List<PlayerStrategy> getQueuedStrategies() {
         return queuedstrats;
     }
@@ -247,14 +207,7 @@ public class Player extends MovingEntity {
         queuedstrats = playerQueuedStrategies;
     }
 
-    public void setAlly(List<Mercenary> loadedAllys) {
-        ally = loadedAllys;
-    }
-
-    public void setBattles(List<Battle> loadedBattles) {
-        battles = loadedBattles;
-    }
-
+    @JsonIgnore
     public Position getprevPos() {
         return prevpos;
     }

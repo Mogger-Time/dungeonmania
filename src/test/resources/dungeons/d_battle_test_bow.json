@@ -1,38 +1,47 @@
 {
-    "entities": [
-        {
-            "type" : "player",
-            "x" : 1,
-            "y" : 8
-        }, {
-            "type" : "spider",
-            "x" : 1,
-            "y" : 1
-        }, {
-            "type": "wood",
-            "x": 1,
-            "y": 7
-        }, {
-            "type": "arrow",
-            "x": 1,
-            "y": 6
-        }, {
-            "type": "arrow",
-            "x": 1,
-            "y": 5
-        }, {
-            "type": "arrow",
-            "x": 1,
-            "y": 4
-        }, {
-            "type": "mercenary",
-            "x": 1,
-            "y": -1
-        }, {
-            "type": "mercenary",
-            "x": 1,
-            "y": -2
-        }
-    ],
-    "goal-condition": {"goal": "exit"}
+  "entities": [
+    {
+      "type": "player",
+      "x": 1,
+      "y": 8
+    },
+    {
+      "type": "spider",
+      "x": 1,
+      "y": 1
+    },
+    {
+      "type": "wood",
+      "x": 1,
+      "y": 7
+    },
+    {
+      "type": "arrow",
+      "x": 1,
+      "y": 6
+    },
+    {
+      "type": "arrow",
+      "x": 1,
+      "y": 5
+    },
+    {
+      "type": "arrow",
+      "x": 1,
+      "y": 4
+    },
+    {
+      "type": "mercenary",
+      "x": 1,
+      "y": -1
+    },
+    {
+      "type": "mercenary",
+      "x": 1,
+      "y": -2
+    }
+  ],
+  "goal-condition": {
+    "goal": "exit"
+  }
 }

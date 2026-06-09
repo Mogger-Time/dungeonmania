@@ -1,25 +1,18 @@
 package dungeonmania.items_testing;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import static dungeonmania.TestUtils.getEntities;
-import static dungeonmania.TestUtils.getGoals;
-import static dungeonmania.TestUtils.getInventory;
-import static dungeonmania.TestUtils.getPlayer;
-
-import java.util.List;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import dungeonmania.DungeonManiaController;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static dungeonmania.TestUtils.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SunStone {
     @Test
@@ -28,12 +21,12 @@ public class SunStone {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_testSunStoneOpenDoors", "c_sunstoneTest_twoTreasureGoal");
         EntityResponse initPlayer = getPlayer(res).get();
-        EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(1,3), initPlayer.isInteractable());
+        EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(1, 3), initPlayer.isInteractable());
 
         // pick up sun stone
         res = dmc.tick(Direction.DOWN);
         assertEquals(getInventory(res, "sun_stone").size(), 1);
-    
+
         // check that sun stone is retained in the inventory after use
         // player walks through the door
         res = dmc.tick(Direction.DOWN);
@@ -48,12 +41,12 @@ public class SunStone {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_testSunStoneOpenDoors", "c_sunstoneTest_twoTreasureGoal");
         EntityResponse initPlayer = getPlayer(res).get();
-        EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(1,3), initPlayer.isInteractable());
+        EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(1, 3), initPlayer.isInteractable());
 
         // pick up sun stone
         res = dmc.tick(Direction.DOWN);
         assertEquals(getInventory(res, "sun_stone").size(), 1);
-    
+
         // check that sun stone is retained in the inventory after use
         // player walks through the door
         res = dmc.tick(Direction.DOWN);
@@ -67,7 +60,7 @@ public class SunStone {
         // check that sun stone is retained in the inventory after use
         // player walks through the door
         assertEquals(getInventory(res, "sun_stone").size(), 1);
-        expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(3,3), initPlayer.isInteractable());
+        expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(3, 3), initPlayer.isInteractable());
         actualPlayer = getPlayer(res).get();
         assertEquals(expectedPlayer, actualPlayer);
     }
@@ -158,7 +151,7 @@ public class SunStone {
     public void testMercenaryNotBribedWithSunStone() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_testMercenaryNotBribedWithSunStone", "c_sunstoneTest_twoTreasureGoal");
-        
+
         List<EntityResponse> mercenary = getEntities(res, "mercenary");
         assertEquals(1, mercenary.size());
         String mercenaryId = mercenary.get(0).getId();
@@ -170,7 +163,7 @@ public class SunStone {
 
         assertEquals(getInventory(res, "treasure").size(), 0);
 
-        assertThrows(InvalidActionException.class, ()->dmc.interact(mercenaryId), "Not enough treasure");
+        assertThrows(InvalidActionException.class, () -> dmc.interact(mercenaryId), "Not enough treasure");
     }
 
     @Test
@@ -178,7 +171,7 @@ public class SunStone {
     public void testSunStoneTreasureGoal() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_testSunStoneTreasureGoal", "c_sunstoneTest_twoTreasureGoal");
-        
+
         // player picks up sun stones
         assertEquals(getGoals(res), ":treasure");
         res = dmc.tick(Direction.DOWN); // pick up 1 sun_stone
@@ -194,7 +187,7 @@ public class SunStone {
     public void testSunStoneTreasureExitGoal() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_testSunStoneTreasureExitGoals", "c_sunstoneTest_threeTreasureGoal");
-        
+
         // player picks up sun stones and walks towards the exit
         assertEquals(getGoals(res), "(:treasure AND :exit)");
         res = dmc.tick(Direction.DOWN); // pick up 1 sun_stone
@@ -206,7 +199,7 @@ public class SunStone {
         res = dmc.tick(Direction.DOWN); // pick up 1 sun_stone        
         assertEquals(getInventory(res, "sun_stone").size(), 3);
         assertEquals(getGoals(res), ":exit");
-        res = dmc.tick(Direction.DOWN); 
+        res = dmc.tick(Direction.DOWN);
         assertEquals(getGoals(res), "");
     }
 
@@ -215,7 +208,7 @@ public class SunStone {
     public void testSunStoneOpenMultipleDoorsWoodCraftSceptre() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_testSunStoneCraftItems", "c_sunstoneTest_twoTreasureGoal");
-        
+
         // sceptre = 1 wood + (1 key / 1 treasure) + 1 sun stone
         res = dmc.tick(Direction.RIGHT); // pick up 1 sun_stone
         assertEquals(getInventory(res, "sun_stone").size(), 1);
@@ -231,8 +224,8 @@ public class SunStone {
         assertEquals(getInventory(res, "sun_stone").size(), 1);
 
         EntityResponse initPlayer = getPlayer(res).get();
-        EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(5,4), initPlayer.isInteractable());
-    
+        EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(5, 4), initPlayer.isInteractable());
+
         // check that sun stone is retained in the inventory after use
         // player walks through the door
         res = dmc.tick(Direction.RIGHT);
@@ -246,7 +239,7 @@ public class SunStone {
         // check that sun stone is retained in the inventory after use
         // player walks through the door
         assertEquals(getInventory(res, "sun_stone").size(), 1);
-        expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(6,5), initPlayer.isInteractable());
+        expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(6, 5), initPlayer.isInteractable());
         actualPlayer = getPlayer(res).get();
         assertEquals(expectedPlayer, actualPlayer);
     }

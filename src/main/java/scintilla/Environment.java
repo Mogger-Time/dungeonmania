@@ -8,13 +8,13 @@ public class Environment {
     private volatile static Boolean IsHeadless = null;
     private volatile static Boolean IsSecure = null;
 
-    public synchronized final static String getIPAddress() {
+    public synchronized static String getIPAddress() {
         return (IPAddress == null && (IPAddress = System.getenv(PREFIX + "ADDRESS")) == null)
-            ? IPAddress = "localhost" // default to localhost
-            : IPAddress;
+                ? IPAddress = "localhost" // default to localhost
+                : IPAddress;
     }
 
-    public synchronized final static int getPort() {
+    public synchronized static int getPort() {
         if (Port != null) return Port;
         try {
             return Port = Integer.parseInt(System.getenv(PREFIX + "PORT"));
@@ -22,12 +22,12 @@ public class Environment {
             return Port = 4568;
         }
     }
-    
-    public synchronized final static boolean isHeadless() {
+
+    public synchronized static boolean isHeadless() {
         return IsHeadless != null ? IsHeadless.booleanValue() : (IsHeadless = (System.getenv(PREFIX + "HEADLESS") != null));
     }
 
-    public synchronized final static boolean isSecure() {
+    public synchronized static boolean isSecure() {
         return IsSecure != null ? IsSecure.booleanValue() : (IsSecure = (System.getenv(PREFIX + "SECURE") != null));
     }
 }

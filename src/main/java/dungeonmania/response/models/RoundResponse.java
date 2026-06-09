@@ -1,26 +1,24 @@
 package dungeonmania.response.models;
 
+import lombok.Getter;
+
 import java.util.List;
 
 public class RoundResponse {
-    private double deltaPlayerHealth;
-    private double deltaEnemyHealth;
-    private List<ItemResponse> weaponryUsed;
+    private final double deltaPlayerHealth;
+    @Getter
+    private final double deltaEnemyHealth;
+    @Getter
+    private final List<ItemResponse> weaponryUsed;
 
-    public RoundResponse(double deltaPlayerHealth, double deltaEnemyHealth, List<ItemResponse> weaponryUsed)
-    {
+    public RoundResponse(double deltaPlayerHealth, double deltaEnemyHealth, List<ItemResponse> weaponryUsed) {
         this.deltaPlayerHealth = deltaPlayerHealth;
         this.deltaEnemyHealth = deltaEnemyHealth;
         this.weaponryUsed = weaponryUsed;
     }
 
-    public double getDeltaCharacterHealth(){
+    public double getDeltaCharacterHealth() {
         return deltaPlayerHealth;
     }
-    
-    public double getDeltaEnemyHealth(){
-        return deltaEnemyHealth;
-    }
 
-    public List<ItemResponse> getWeaponryUsed() { return weaponryUsed; }
 }

@@ -1,13 +1,17 @@
 package dungeonmania.entities.movingEntity;
 
-import org.json.JSONObject;
-
+import dungeonmania.dtos.EntitiesDto;
 import dungeonmania.entities.movingEntity.movementStrategy.ClockwiseStrategy;
 import dungeonmania.entities.movingEntity.playerStrategy.PlayerStrategy;
+import dungeonmania.game.GameRuntimeContext;
 import dungeonmania.util.Position;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class Spider extends Enemy {
-    
+
     private int spawnRate;
 
     public Spider() {
@@ -17,19 +21,11 @@ public class Spider extends Enemy {
     }
 
     @Override
-    public void setupEntity(JSONObject entityConfig, Position position) {
+    public void setupEntity(EntitiesDto entitiesDto, Position position) {
         super.setPosition(position);
-        super.setHealth(entityConfig.getDouble("spider_health"));
-        super.setDamage(entityConfig.getDouble("spider_attack"));
-        this.setSpawnRate(entityConfig.getInt("spider_spawn_rate"));
-    }
-
-    public void setSpawnRate(int spawnRate) {
-        this.spawnRate = spawnRate;
-    }
-
-    public int getSpawnRate() {
-        return spawnRate;
+        super.setHealth(GameRuntimeContext.getConfig().getSpiderHealth());
+        super.setDamage(GameRuntimeContext.getConfig().getSpiderAttack());
+        this.setSpawnRate(GameRuntimeContext.getConfig().getSpiderSpawnRate());
     }
 
     public void alert(PlayerStrategy strat) {

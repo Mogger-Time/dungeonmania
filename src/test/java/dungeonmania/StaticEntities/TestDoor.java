@@ -1,19 +1,16 @@
 package dungeonmania.StaticEntities;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static dungeonmania.TestUtils.getEntities;
-import static dungeonmania.TestUtils.getPlayer;
-import static dungeonmania.TestUtils.getInventory;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static dungeonmania.TestUtils.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class TestDoor {
     // Provided test from ExampleTests.java
@@ -47,7 +44,7 @@ public class TestDoor {
         actualDungeonRes = dmc.tick(Direction.DOWN);
         EntityResponse actualPlayer = getPlayer(actualDungeonRes).get();
 
-        assertEquals(expectedPlayer, actualPlayer); 
+        assertEquals(expectedPlayer, actualPlayer);
     }
 
     @Test

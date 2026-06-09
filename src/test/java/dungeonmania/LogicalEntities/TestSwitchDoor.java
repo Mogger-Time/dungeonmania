@@ -1,20 +1,16 @@
 package dungeonmania.LogicalEntities;
 
-import static dungeonmania.TestUtils.getEntities;
-import static dungeonmania.TestUtils.getPlayer;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static dungeonmania.TestUtils.getInventory;
-
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static dungeonmania.TestUtils.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 
 public class TestSwitchDoor {
@@ -28,9 +24,9 @@ public class TestSwitchDoor {
         EntityResponse initFloorSwitch = getEntities((initDungonRes), "switch").get(0);
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(4, 1), false);
-        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3,1), false);
-        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3,1), false);
-        
+        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3, 1), false);
+        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3, 1), false);
+
 
         // move player right pushing the boulder onto the switch and activating adjacent door
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
@@ -51,11 +47,12 @@ public class TestSwitchDoor {
         Position pos = getEntities(actualDungonRes, "player").get(0).getPosition();
         // Passes through the door
         actualDungonRes = dmc.tick(Direction.DOWN);
-        
-    
+
+
         assertNotEquals(pos, getEntities(actualDungonRes, "player").get(0).getPosition());
 
     }
+
     @Test
     @DisplayName("Test the player can't walk through the unactivated switch door")
     public void testCanNotWalkThroughSwitchDoor() {
@@ -65,7 +62,7 @@ public class TestSwitchDoor {
 
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(4, 0), false);
-    
+
 
         // move player up not pushing the boulder onto the switch and then moving to the door
         DungeonResponse actualDungonRes = dmc.tick(Direction.UP);
@@ -75,7 +72,7 @@ public class TestSwitchDoor {
         // Walk to the door and attempt to go through
         actualDungonRes = dmc.tick(Direction.DOWN);
         EntityResponse actualPlayer = getPlayer(actualDungonRes).get();
- 
+
         // assert after movement, boulder is not on the switch and the player is in right spot
         assertEquals(expectedPlayer, actualPlayer);
 
@@ -83,10 +80,10 @@ public class TestSwitchDoor {
         // Does not pass through the door
         actualDungonRes = dmc.tick(Direction.DOWN);
         assertEquals(expectedPlayer, actualPlayer);
-        
-    
+
 
     }
+
     @Test
     @DisplayName("Test player can use a key to open and walk through a switch door")
     public void useKeyWalkThroughOpenDoor() {
@@ -111,6 +108,7 @@ public class TestSwitchDoor {
         //Assert player went through door
         assertNotEquals(pos, getEntities(res, "player").get(0).getPosition());
     }
+
     @Test
     @DisplayName("Test the player can't open the and door with one switch")
     public void testBoulderOnSwitchAND() {
@@ -121,9 +119,9 @@ public class TestSwitchDoor {
         EntityResponse initFloorSwitch = getEntities((initDungonRes), "switch").get(0);
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(4, 0), false);
-        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3,1), false);
-        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3,1), false);
-        
+        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3, 1), false);
+        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3, 1), false);
+
 
         // move player right pushing the boulder onto the switch and activating adjacent door
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
@@ -144,11 +142,12 @@ public class TestSwitchDoor {
         Position pos = getEntities(actualDungonRes, "player").get(0).getPosition();
         // Does not pass through the door
         actualDungonRes = dmc.tick(Direction.DOWN);
-        
-    
+
+
         assertEquals(pos, getEntities(actualDungonRes, "player").get(0).getPosition());
 
     }
+
     @Test
     @DisplayName("Test the player can't open the xor door when double activated")
     public void testBoulderOnSwitchXOR() {
@@ -159,9 +158,9 @@ public class TestSwitchDoor {
         EntityResponse initFloorSwitch = getEntities((initDungonRes), "switch").get(0);
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(4, 0), false);
-        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3,1), false);
-        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3,1), false);
-        
+        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3, 1), false);
+        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3, 1), false);
+
 
         // move player right pushing the boulder onto the switch and activating adjacent door
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
@@ -182,8 +181,8 @@ public class TestSwitchDoor {
         Position pos = getEntities(actualDungonRes, "player").get(0).getPosition();
         // Does not pass through the door
         actualDungonRes = dmc.tick(Direction.DOWN);
-        
-    
+
+
         assertEquals(pos, getEntities(actualDungonRes, "player").get(0).getPosition());
 
     }
@@ -198,9 +197,9 @@ public class TestSwitchDoor {
         EntityResponse initFloorSwitch = getEntities((initDungonRes), "switch").get(0);
         // create the expected result
         EntityResponse expectedPlayer = new EntityResponse(initPlayer.getId(), initPlayer.getType(), new Position(4, 1), false);
-        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3,1), false);
-        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3,1), false);
-        
+        EntityResponse expectedBoulder = new EntityResponse(initBoulder.getId(), initBoulder.getType(), new Position(3, 1), false);
+        EntityResponse expectedFloorSwitch = new EntityResponse(initFloorSwitch.getId(), initFloorSwitch.getType(), new Position(3, 1), false);
+
 
         // move player right pushing the boulder onto the switch and activating adjacent door
         DungeonResponse actualDungonRes = dmc.tick(Direction.RIGHT);
@@ -221,12 +220,11 @@ public class TestSwitchDoor {
         Position pos = getEntities(actualDungonRes, "player").get(0).getPosition();
         // Does not pass through the door
         actualDungonRes = dmc.tick(Direction.DOWN);
-        
-    
+
+
         assertNotEquals(pos, getEntities(actualDungonRes, "player").get(0).getPosition());
 
     }
 
 
-   
 }

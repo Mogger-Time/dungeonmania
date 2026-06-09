@@ -1,49 +1,59 @@
 {
-    "entities": [
-        {
-            "type" : "player",
-            "x" : 1,
-            "y" : 3
-        }, {
-            "type": "mercenary",
-            "x": 3,
-            "y": 3
-        }, {
-            "type": "swamp_tile",
-            "x": 1,
-            "y": 4,
-            "movement_factor": 8
-        }, {
-            "type": "swamp_tile",
-            "x": 2,
-            "y": 4,
-            "movement_factor": 8
-        }, {
-            "type": "swamp_tile",
-            "x": 2,
-            "y": 3,
-            "movement_factor": 8
-        }, {
-            "type": "swamp_tile",
-            "x": 2,
-            "y": 2,
-            "movement_factor": 8
-        }, {
-            "type": "swamp_tile",
-            "x": 0,
-            "y": 4,
-            "movement_factor": 8
-        }, {
-            "type": "swamp_tile",
-            "x": 0,
-            "y": 3,
-            "movement_factor": 8
-        }, {
-            "type": "swamp_tile",
-            "x": 0,
-            "y": 2,
-            "movement_factor": 8
-        }
-    ],
-    "goal-condition": {"goal": "exit"}
+  "entities": [
+    {
+      "type": "player",
+      "x": 1,
+      "y": 3
+    },
+    {
+      "type": "mercenary",
+      "x": 3,
+      "y": 3
+    },
+    {
+      "type": "swamp_tile",
+      "x": 1,
+      "y": 4,
+      "movement_factor": 8
+    },
+    {
+      "type": "swamp_tile",
+      "x": 2,
+      "y": 4,
+      "movement_factor": 8
+    },
+    {
+      "type": "swamp_tile",
+      "x": 2,
+      "y": 3,
+      "movement_factor": 8
+    },
+    {
+      "type": "swamp_tile",
+      "x": 2,
+      "y": 2,
+      "movement_factor": 8
+    },
+    {
+      "type": "swamp_tile",
+      "x": 0,
+      "y": 4,
+      "movement_factor": 8
+    },
+    {
+      "type": "swamp_tile",
+      "x": 0,
+      "y": 3,
+      "movement_factor": 8
+    },
+    {
+      "type": "swamp_tile",
+      "x": 0,
+      "y": 2,
+      "movement_factor": 8
+    }
+  ],
+  "goal-condition": {
+    "goal": "exit"
+  }
 }
